@@ -3,6 +3,7 @@ node_modules/
 lib/
 /react-mosaic-component.css*
 .*.swp
+.env.local
 react-mosaic.tar.bz2
 npm-debug.log
 yarn-error.log
