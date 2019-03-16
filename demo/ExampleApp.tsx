@@ -1,4 +1,15 @@
 import { Classes, HTMLSelect } from '@blueprintjs/core';
+import {
+  Button,
+  InputGroup,
+  ControlGroup,
+  Menu,
+  MenuItem,
+  Popover,
+  Position,
+  Tag,
+} from "@blueprintjs/core";
+
 import { IconNames } from '@blueprintjs/icons';
 import classNames from 'classnames';
 import dropRight from 'lodash/dropRight';
@@ -19,7 +30,7 @@ import {
   MosaicZeroState,
   updateTree,
 } from '../src';
-
+import { MenuButton } from "../src/buttons/MenuButton";
 import { CloseAdditionalControlsButton } from './CloseAdditionalControlsButton';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -69,6 +80,36 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
   };
 
   render() {
+    const small = false;
+    const large = false;
+    const disabled = true;
+        
+    // const filterValue = "asdfc";
+        
+        
+    const tagValue = "";
+
+
+    const permissionsMenu = (
+      <Popover
+        content={
+          <Menu>
+            <MenuItem text="can edit" />
+            <MenuItem text="can view" />
+          </Menu>
+        }
+        disabled={disabled}
+        position={Position.BOTTOM_RIGHT}
+      >
+        <Button disabled={disabled} minimal={true} fill rightIcon="caret-down">
+          can edit
+        </Button>
+      </Popover>
+    );
+
+    const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
+    const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
+
     return (
       <div className="react-mosaic-example-app">
         {this.renderNavBar()}
@@ -76,6 +117,35 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
           renderTile={(count, path) => (
             <MosaicWindow<number>
               additionalControls={count === 3 ? additionalControls : EMPTY_ARRAY}
+              statusbar={count!==2}
+              statusbarControls={(
+                <ControlGroup fill={true} vertical={false}>
+
+                  <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{cursor: "pointer"}} />
+                  <InputGroup placeholder="Find filters..." disabled={disabled}/>
+                  <Button icon="arrow-right" disabled={disabled}/>
+
+                  <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    leftIcon="tag"
+                    placeholder="Find tags"
+                    rightElement={resultsTag}
+                    small={small}
+                    value={tagValue}
+                  />
+                  <InputGroup
+                    disabled={disabled}
+                    large={large}
+                    placeholder="Add people or groups..."
+                    rightElement={permissionsMenu}
+                    small={small}
+                  />
+                  </ControlGroup>
+
+
+              )}
+              toolbarWindowIcon={count===2 ? <Button minimal icon="cross" /> : <MenuButton />}
               title={`Window ${count}`}
               createNode={this.createNode}
               path={path}

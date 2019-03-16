@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { MosaicKey, MosaicNode, MosaicPath, MosaicUpdate } from './types';
+import { MosaicKey, MosaicNode, MosaicPath, MosaicUpdate, MosaicWindowInfo } from './types';
 
 /**
  * Mosaic provides functionality on the context for components within
@@ -74,9 +74,21 @@ export interface MosaicWindowActions {
    */
   replaceWithNew: (...args: any[]) => Promise<void>;
   /**
+   * Sets the expanded state for the window
+   */
+  setExpanded: (expanded: boolean) => void;
+  /**
    * Sets the open state for the tray that holds additional controls
    */
   setAdditionalControlsOpen: (open: boolean) => void;
+  /**
+   * Returns the info to this window
+   */
+  getInfo: () => MosaicWindowInfo;
+  /**
+   * Returns the info to this window
+   */
+  isExpanded: () => boolean;
   /**
    * Returns the path to this window
    */
@@ -105,6 +117,7 @@ export const MosaicWindowActionsPropType = PropTypes.shape({
   replaceWithNew: PropTypes.func.isRequired,
   setAdditionalControlsOpen: PropTypes.func.isRequired,
   getPath: PropTypes.func.isRequired,
+  getInfo: PropTypes.func.isRequired,
   connectDragSource: PropTypes.func.isRequired,
 }).isRequired;
 

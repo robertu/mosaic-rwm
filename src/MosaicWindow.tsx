@@ -14,7 +14,7 @@ import {
   DropTarget,
 } from 'react-dnd';
 
-import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION } from './buttons/defaultToolbarControls';
+import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION, DEFAULT_CONTROLS_WITH_CREATION_EXPANDED, DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED, DEFAULT_WINDOW_ICON } from './buttons/defaultToolbarControls';
 import { Separator } from './buttons/Separator';
 import {
   ModernMosaicWindowContext,
@@ -34,12 +34,16 @@ export interface MosaicWindowProps<T extends MosaicKey> {
   path: MosaicBranch[];
   className?: string;
   toolbarControls?: React.ReactNode;
+  statusbarControls?: React.ReactNode;
+  toolbarWindowIcon?: React.ReactNode;
   additionalControls?: React.ReactNode;
   additionalControlButtonText?: string;
   draggable?: boolean;
+  statusbar?: boolean;
   createNode?: CreateNode<T>;
   renderPreview?: (props: MosaicWindowProps<T>) => JSX.Element;
   renderToolbar?: ((props: MosaicWindowProps<T>, draggable: boolean | undefined) => JSX.Element) | null;
+  renderStatusbar?: (() => JSX.Element) | null;
   onDragStart?: () => void;
   onDragEnd?: (type: 'drop' | 'reset') => void;
 }
@@ -61,6 +65,7 @@ export type InternalMosaicWindowProps<T extends MosaicKey> = MosaicWindowProps<T
 
 export interface InternalMosaicWindowState {
   additionalControlsOpen: boolean;
+  expanded: boolean;
 }
 
 export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
@@ -92,6 +97,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
 
   state: InternalMosaicWindowState = {
     additionalControlsOpen: false,
+    expanded: false
   };
   context!: MosaicContext<T>;
 
@@ -110,6 +116,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       connectDropTarget,
       connectDragPreview,
       draggedMosaicId,
+      statusbar
     } = this.props;
 
     return (
@@ -123,13 +130,14 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
             ref={(element) => (this.rootElement = element)}
           >
             {this.renderToolbar()}
-            <div className="mosaic-window-body">{this.props.children!}</div>
+            <div className="mosaic-window-body mosaic-window-body-statusbar">{this.props.children!}</div>
             <div className="mosaic-window-body-overlay" onClick={() => this.setAdditionalControlsOpen(false)} />
             <div className="mosaic-window-additional-actions-bar">{additionalControls}</div>
             {connectDragPreview(renderPreview!(this.props))}
             <div className="drop-target-container">
               {values<MosaicDropTargetPosition>(MosaicDropTargetPosition).map(this.renderDropTarget)}
             </div>
+            {statusbar && this.renderStatusbar()}
           </div>,
         )}
       </ModernMosaicWindowContext.Provider>
@@ -138,12 +146,34 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
 
   private getToolbarControls() {
     const { toolbarControls, createNode } = this.props;
+    const { expanded } = this.state;
     if (toolbarControls) {
       return toolbarControls;
     } else if (createNode) {
-      return DEFAULT_CONTROLS_WITH_CREATION;
+      return expanded ? DEFAULT_CONTROLS_WITH_CREATION_EXPANDED : DEFAULT_CONTROLS_WITH_CREATION;
     } else {
-      return DEFAULT_CONTROLS_WITHOUT_CREATION;
+      return expanded ? DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED : DEFAULT_CONTROLS_WITHOUT_CREATION;
+    }
+  }
+
+  private getStatusbarControls() {
+    const { statusbarControls, createNode } = this.props;
+    const { expanded } = this.state;
+    if (statusbarControls) {
+      return statusbarControls;
+    } else if (createNode) {
+      return expanded ? DEFAULT_CONTROLS_WITH_CREATION_EXPANDED : DEFAULT_CONTROLS_WITH_CREATION;
+    } else {
+      return expanded ? DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED : DEFAULT_CONTROLS_WITHOUT_CREATION;
+    }
+  }
+
+  private getToolbarWindowIcon() {
+    const { toolbarWindowIcon } = this.props;
+    if (toolbarWindowIcon) {
+      return toolbarWindowIcon;
+    } else {
+      return DEFAULT_WINDOW_ICON;
     }
   }
 
@@ -159,6 +189,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     } = this.props;
     const { additionalControlsOpen } = this.state;
     const toolbarControls = this.getToolbarControls();
+    const toolbarWindowIcon = this.getToolbarWindowIcon();
     const draggableAndNotRoot = draggable && path.length > 0;
 
     if (renderToolbar) {
@@ -184,6 +215,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
 
     return (
       <div className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
+        {toolbarWindowIcon}
         {titleDiv}
         <div className={classNames('mosaic-window-controls', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
           {hasAdditionalControls && (
@@ -203,6 +235,29 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
           {hasAdditionalControls && <Separator />}
           {toolbarControls}
         </div>
+      </div>
+    );
+  }
+
+  private renderStatusbar() {
+    const {
+      renderStatusbar,
+    } = this.props;
+    const statusbarControls = this.getStatusbarControls();
+
+    if (renderStatusbar) {
+      return (
+        <div className="mosaic-window-statusbar">
+          {renderStatusbar}
+        </div>
+      );
+    }
+
+    return (
+      <div className="mosaic-window-statusbar">
+
+          {statusbarControls}
+
       </div>
     );
   }
@@ -233,6 +288,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
         direction,
         second,
         first: getAndAssertNodeAtPathExists(root, path),
+        splitPercentage: 50
       }),
     );
   };
@@ -249,6 +305,9 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   };
 
   private getPath = () => this.props.path;
+  private getInfo = () => ({ window: this });
+  private isExpanded = () => this.state.expanded;
+  private setExpanded = (expanded: boolean) => this.setState({expanded});
 
   private connectDragSource = (connectedElements: React.ReactElement<any>) => {
     const { connectDragSource } = this.props;
@@ -258,6 +317,9 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   private readonly childContext: ModernMosaicWindowContext = {
     mosaicWindowActions: {
       split: this.split,
+      getInfo: this.getInfo,
+      isExpanded: this.isExpanded,
+      setExpanded: this.setExpanded,
       replaceWithNew: this.swap,
       setAdditionalControlsOpen: this.setAdditionalControlsOpen,
       getPath: this.getPath,

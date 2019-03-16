@@ -14,7 +14,7 @@ import { MosaicKey, MosaicNode, MosaicPath, MosaicUpdate, ResizeOptions, TileRen
 import { createExpandUpdate, createHideUpdate, createRemoveUpdate, updateTree } from './util/mosaicUpdates';
 import { getLeaves } from './util/mosaicUtilities';
 
-const DEFAULT_EXPAND_PERCENTAGE = 70;
+const DEFAULT_EXPAND_PERCENTAGE = 80;
 
 export interface MosaicBaseProps<T extends MosaicKey> {
   /**

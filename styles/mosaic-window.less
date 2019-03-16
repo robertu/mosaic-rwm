@@ -23,9 +23,28 @@
       cursor: move;
     }
   }
+  .mosaic-window-statusbar {
+    z-index: 4;
+    
+    background:rgba(240, 240, 240, 1  );
+    padding: 0px 0px;
+    
+  	box-shadow: inset 0px -1px 4px rgba(200,200, 200, 1);
+  }
+  .mosaic-window-statusbar-content {
+    z-index: 4;
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    height: @toolbar-height;
+    background:rgba(240, 240, 240, 1  );
+    padding: 1px 1px;
+    
+  	box-shadow: inset 0px -1px 4px rgba(200,200, 200, 1);
+  }
 
   .mosaic-window-title {
-    padding-left: 15px;
+    padding-left: 8px;
     flex: 1;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -52,6 +71,8 @@
     background: white;
     z-index: 1;
     overflow: hidden;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
 
   .mosaic-window-additional-actions-bar {

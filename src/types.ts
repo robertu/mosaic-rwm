@@ -39,6 +39,12 @@ export interface MosaicUpdateSpec<T extends MosaicKey> {
   first?: MosaicUpdateSpec<T>;
   second?: MosaicUpdateSpec<T>;
 }
+/**
+ * Used by many utility methods to update the tree.
+ */
+export interface MosaicWindowInfo {
+  window: any;
+}
 
 export interface MosaicUpdate<T extends MosaicKey> {
   path: MosaicPath;

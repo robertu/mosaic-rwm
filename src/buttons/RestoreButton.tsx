@@ -6,23 +6,23 @@ import { MosaicKey } from '../types';
 import { OptionalBlueprint } from '../util/OptionalBlueprint';
 import { createDefaultToolbarButton, MosaicButtonProps } from './MosaicButton';
 
-export class ExpandButton<T extends MosaicKey> extends React.PureComponent<MosaicButtonProps> {
+export class RestoreButton<T extends MosaicKey> extends React.PureComponent<MosaicButtonProps> {
   static contextTypes = MosaicWindowContext;
   context!: MosaicWindowContext<T>;
 
   render() {
     return createDefaultToolbarButton(
-      'Expand',
-      classNames('expand-button', OptionalBlueprint.getIconClass('MAXIMIZE')),
-      this.expand,
+      'Restore',
+      classNames('restore-button', OptionalBlueprint.getIconClass('MINIMIZE')),
+      this.restore,
     );
   }
 
-  private expand = () => {
+  private restore = () => {
     const path = this.context.mosaicWindowActions.getPath();
 
-    this.context.mosaicActions.expand(path, 100);
-    this.context.mosaicWindowActions.setExpanded(true);
+    this.context.mosaicActions.expand(path, 50);
+    this.context.mosaicWindowActions.setExpanded(false);
 
     if (this.props.onClick) {
       this.props.onClick();
@@ -30,4 +30,4 @@ export class ExpandButton<T extends MosaicKey> extends React.PureComponent<Mosai
   };
 }
 
-export const ExpandButtonFactory = React.createFactory(ExpandButton);
+export const RestoreButtonFactory = React.createFactory(RestoreButton);
