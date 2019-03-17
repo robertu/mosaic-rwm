@@ -187,10 +187,11 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       path,
       renderToolbar,
     } = this.props;
+    const { expanded } = this.state;
     const { additionalControlsOpen } = this.state;
     const toolbarControls = this.getToolbarControls();
     const toolbarWindowIcon = this.getToolbarWindowIcon();
-    const draggableAndNotRoot = draggable && path.length > 0;
+    const draggableAndNotRoot = draggable && path.length > 0 && !expanded;
 
     if (renderToolbar) {
       const connectedToolbar = connectDragSource(renderToolbar(this.props, draggable)) as React.ReactElement<any>;
