@@ -9,6 +9,7 @@ import {
   Position,
   Tag,
 } from "@blueprintjs/core";
+import { FocusStyleManager } from "@blueprintjs/core";
 
 import { IconNames } from '@blueprintjs/icons';
 import classNames from 'classnames';
@@ -46,6 +47,7 @@ const gitHubLogo = require('./GitHub-Mark-Light-32px.png');
 const { version } = require('../package.json');
 
 let windowCount = 3;
+FocusStyleManager.onlyShowFocusOnTabs();
 
 export const THEMES = {
   ['Blueprint']: 'mosaic-blueprint-theme',
