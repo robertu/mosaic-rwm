@@ -20,8 +20,8 @@ The core of react-mosaic's operations revolve around the simple binary tree [spe
 
 ### Installation
 
-1.  `yarn add react-mosaic-component`
-1.  Make sure `react-mosaic-component.css` is included on your page.
+1.  `yarn add mosaicrwm`
+1.  Make sure `mosaicrwm.css` is included on your page.
 1.  Import the `Mosaic` component and use it in your app.
 1.  (Optional) Install Blueprint
 

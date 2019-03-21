@@ -1,9 +1,9 @@
 .idea/
 node_modules/
 lib/
-/react-mosaic-component.css*
+/mosaicrwm.css*
 .*.swp
 .env.local
-react-mosaic.tar.bz2
+mosaicrwm.tar.bz2
 npm-debug.log
 yarn-error.log

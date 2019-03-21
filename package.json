@@ -13,7 +13,7 @@
   "scripts": {
     "build": "npm-run-all clean build:ts build:less",
     "build:ts": "tsc -p tsconfig-build.json",
-    "build:less": "lessc --source-map styles/index.less react-mosaic-component.css",
+    "build:less": "lessc --source-map styles/index.less mosaicrwm.css",
     "bundle": "rm -rf docs/ && webpack --config webpack/bundle.ts",
     "clean": "rm -rf lib/",
     "start": "webpack-dev-server --config webpack/hot.ts",
@@ -83,7 +83,7 @@
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": "^16.8.3"
   },
   "keywords": [
     "ui",

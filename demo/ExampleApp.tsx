@@ -260,7 +260,7 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
           >
             Add Window to Top Right
           </button>
-          <a className="github-link" href="https://github.com/nomcopter/react-mosaic">
+          <a className="github-link" href="https://github.com/robertu/mosaicrwm">
             <img src={gitHubLogo} />
           </a>
         </div>
