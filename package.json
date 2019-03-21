@@ -1,6 +1,6 @@
 {
-  "name": "react-mosaic-component",
-  "version": "2.1.0",
+  "name": "mosaicrwm",
+  "version": "1.0.0",
   "description": "A React Tiling Window Manager",
   "license": "Apache-2.0",
   "main": "lib/index.js",
@@ -8,7 +8,7 @@
   "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nomcopter/react-mosaic.git"
+    "url": "https://github.com/robertu/mosaicrwm"
   },
   "scripts": {
     "build": "npm-run-all clean build:ts build:less",
@@ -83,13 +83,14 @@
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.8.0"
   },
   "keywords": [
     "ui",
     "react",
     "component",
     "typescript",
+    "blueprintjs",
     "tiling-window-manager",
     "window-manager"
   ]
