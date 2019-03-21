@@ -229,10 +229,9 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
     return (
       <div className={classNames(Classes.NAVBAR, Classes.DARK)}>
         <div className={Classes.NAVBAR_GROUP}>
-          <div className="pt-logo" />
           <div className={Classes.NAVBAR_HEADING}>
-            <a href="https://github.com/nomcopter/react-mosaic">
-              react-mosaic <span className="version">v{version}</span>
+            
+            <img src={gitHubLogo} /> <a className="github-link" href="https://github.com/robertu/mosaicrwm">mosaic react window manager <span className="version">v{version}</span>
             </a>
           </div>
         </div>
@@ -260,9 +259,7 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
           >
             Add Window to Top Right
           </button>
-          <a className="github-link" href="https://github.com/robertu/mosaicrwm">
-            <img src={gitHubLogo} />
-          </a>
+
         </div>
       </div>
     );
