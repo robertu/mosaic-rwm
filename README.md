@@ -1,6 +1,6 @@
-# react-mosaic
+# mosaicrwm
 
-[![CircleCI](https://img.shields.io/circleci/project/github/nomcopter/react-mosaic/master.svg)](https://circleci.com/gh/nomcopter/react-mosaic)
+[![CircleCI](https://img.shields.io/circleci/project/github/robertu/mosaicrwm/master.svg)](https://circleci.com/gh/robertu/mosaicrwm)
 [![npm](https://img.shields.io/npm/v/react-mosaic-component.svg)](https://www.npmjs.com/package/react-mosaic-component)
 
 react-mosaic is a full-featured React Tiling Window Manager meant to give a user complete control over their workspace.
