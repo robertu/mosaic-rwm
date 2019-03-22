@@ -14,20 +14,28 @@ import {
   DropTarget,
 } from 'react-dnd';
 
-import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION, DEFAULT_CONTROLS_WITH_CREATION_EXPANDED, DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED } from './buttons/defaultToolbarControls';
+import {
+  DEFAULT_CONTROLS_WITH_CREATION,
+  DEFAULT_CONTROLS_WITH_CREATION_EXPANDED,
+  DEFAULT_CONTROLS_WITHOUT_CREATION,
+  DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED,
+} from './buttons/defaultToolbarControls';
 import {
   ModernMosaicWindowContext,
   MosaicContext,
   MosaicWindowActionsPropType,
   MosaicWindowContext,
 } from './contextTypes';
-import { MosaicDragItem, MosaicDropData, MosaicDropTargetPosition } from './internalTypes';
-import { MosaicDropTarget } from './MosaicDropTarget';
+
 import { CreateNode, MosaicBranch, MosaicDirection, MosaicDragType, MosaicKey } from './types';
 import { createDragToUpdates } from './util/mosaicUpdates';
-import { getAndAssertNodeAtPathExists } from './util/mosaicUtilities';
-import { OptionalBlueprint } from './util/OptionalBlueprint';
+
 import { MenuButton } from './buttons/MenuButton';
+import { MosaicDragItem, MosaicDropData, MosaicDropTargetPosition } from './internalTypes';
+import { MosaicDropTarget } from './MosaicDropTarget';
+import { OptionalBlueprint } from './util/OptionalBlueprint';
+
+import { getAndAssertNodeAtPathExists } from './util/mosaicUtilities';
 
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
@@ -95,7 +103,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
 
   state: InternalMosaicWindowState = {
     additionalControlsOpen: false,
-    expanded: false
+    expanded: false,
   };
   context!: MosaicContext<T>;
 
@@ -113,7 +121,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       connectDropTarget,
       connectDragPreview,
       draggedMosaicId,
-      statusbar
+      statusbar,
     } = this.props;
 
     return (
@@ -175,14 +183,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   }
 
   private renderToolbar() {
-    const {
-      title,
-      draggable,
-      additionalControls,
-      connectDragSource,
-      path,
-      renderToolbar,
-    } = this.props;
+    const { title, draggable, additionalControls, connectDragSource, path, renderToolbar } = this.props;
     const { expanded } = this.state;
     const toolbarControls = this.getToolbarControls();
     const toolbarWindowIcon = this.getToolbarWindowIcon();
@@ -222,26 +223,14 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   }
 
   private renderStatusbar() {
-    const {
-      renderStatusbar,
-    } = this.props;
+    const { renderStatusbar } = this.props;
     const statusbarControls = this.getStatusbarControls();
 
     if (renderStatusbar) {
-      return (
-        <div className="mosaic-window-statusbar">
-          {renderStatusbar}
-        </div>
-      );
+      return <div className="mosaic-window-statusbar">{renderStatusbar}</div>;
     }
 
-    return (
-      <div className="mosaic-window-statusbar">
-
-          {statusbarControls}
-
-      </div>
-    );
+    return <div className="mosaic-window-statusbar">{statusbarControls}</div>;
   }
 
   private renderDropTarget = (position: MosaicDropTargetPosition) => {
@@ -270,7 +259,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
         direction,
         second,
         first: getAndAssertNodeAtPathExists(root, path),
-        splitPercentage: 50
+        splitPercentage: 50,
       }),
     );
   };
@@ -289,7 +278,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   private getPath = () => this.props.path;
   private getInfo = () => ({ window: this });
   private isExpanded = () => this.state.expanded;
-  private setExpanded = (expanded: boolean) => this.setState({expanded});
+  private setExpanded = (expanded: boolean) => this.setState({ expanded });
 
   private connectDragSource = (connectedElements: React.ReactElement<any>) => {
     const { connectDragSource } = this.props;

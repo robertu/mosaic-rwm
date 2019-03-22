@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Popover, Position } from "@blueprintjs/core";
+
+import { Menu, MenuDivider, MenuItem, Popover, Position } from '@blueprintjs/core';
 
 import { OptionalBlueprint } from '../util/OptionalBlueprint';
 
@@ -24,7 +24,7 @@ export function createDefaultToolbarButton(
 
 export function createMenuToolbarButton(
   className: string,
-  is_window_expanded: boolean,
+  isWindowExpanded: boolean,
   onClickClose: (event: React.MouseEvent<any>) => any,
   onClickExpand: (event: React.MouseEvent<any>) => any,
   onClickRestore: (event: React.MouseEvent<any>) => any,
@@ -33,21 +33,21 @@ export function createMenuToolbarButton(
     <Popover
       content={
         <Menu>
-          {is_window_expanded ? <MenuItem icon="minimize" text="Restore window" onClick={onClickRestore} /> : <MenuItem icon="maximize" text="Maximize window" onClick={onClickExpand} /> }
+          {isWindowExpanded ? (
+            <MenuItem icon="minimize" text="Restore window" onClick={onClickRestore} />
+          ) : (
+            <MenuItem icon="maximize" text="Maximize window" onClick={onClickExpand} />
+          )}
           <MenuDivider />
-          <MenuItem
-            icon="cross"
-            text="Close window"
-            onClick={(e: any) => { console.log("fired!");onClickClose(e); }}
-          />
+          <MenuItem icon="cross" text="Close window" onClick={(e: any) => onClickClose(e)} />
         </Menu>
       }
       position={Position.BOTTOM_LEFT}
-      minimal
+      minimal={true}
     >
-      <button        
+      <button
         className={classNames('mosaic-default-control', OptionalBlueprint.getClasses('BUTTON', 'MINIMAL'), className)}
-       />
+      />
     </Popover>
   );
 }

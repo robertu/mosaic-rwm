@@ -7,5 +7,3 @@ export const DEFAULT_CONTROLS_WITH_CREATION = React.Children.toArray([<ExpandBut
 export const DEFAULT_CONTROLS_WITH_CREATION_EXPANDED = <RestoreButton />;
 export const DEFAULT_CONTROLS_WITHOUT_CREATION = React.Children.toArray([<ExpandButton />, <RemoveButton />]);
 export const DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED = <RestoreButton />;
-
-

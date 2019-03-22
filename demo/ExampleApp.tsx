@@ -1,15 +1,6 @@
 import { Classes, HTMLSelect } from '@blueprintjs/core';
-import {
-  Button,
-  InputGroup,
-  ControlGroup,
-  Menu,
-  MenuItem,
-  Popover,
-  Position,
-  Tag,
-} from "@blueprintjs/core";
-import { FocusStyleManager } from "@blueprintjs/core";
+import { Button, ControlGroup, InputGroup, Menu, MenuItem, Popover, Position, Tag } from '@blueprintjs/core';
+import { FocusStyleManager } from '@blueprintjs/core';
 
 import { IconNames } from '@blueprintjs/icons';
 import classNames from 'classnames';
@@ -55,7 +46,7 @@ export const THEMES = {
 
 export type Theme = keyof typeof THEMES;
 
-const additionalToolbarButtons = React.Children.toArray([<Button minimal icon="add-to-folder" />, ]);
+const additionalToolbarButtons = React.Children.toArray([<Button minimal={true} icon="add-to-folder" />]);
 
 export interface ExampleAppState {
   currentNode: MosaicNode<number> | null;
@@ -81,12 +72,10 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
     const small = false;
     const large = false;
     const disabled = true;
-        
-    // const filterValue = "asdfc";
-        
-        
-    const tagValue = "";
 
+    // const filterValue = "asdfc";
+
+    const tagValue = '';
 
     const permissionsMenu = (
       <Popover
@@ -99,14 +88,20 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
         disabled={disabled}
         position={Position.BOTTOM_RIGHT}
       >
-        <Button disabled={disabled} minimal={true} fill rightIcon="caret-down">
+        <Button disabled={disabled} minimal={true} fill={true} rightIcon="caret-down">
           can edit
         </Button>
       </Popover>
     );
 
     const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
-    const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
+    const FILTER_OPTIONS = [
+      'Filter',
+      'Name - ascending',
+      'Name - descending',
+      'Price - ascending',
+      'Price - descending',
+    ];
 
     return (
       <div className="react-mosaic-example-app">
@@ -115,14 +110,13 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
           renderTile={(count, path) => (
             <MosaicWindow<number>
               additionalControls={count === 3 ? additionalToolbarButtons : null}
-              toolbarControls={count == 1 ? <Button minimal icon="help" /> : true}
-              statusbar={count!==2}
-              statusbarControls={(
+              toolbarControls={count === 1 ? <Button minimal={true} icon="help" /> : true}
+              statusbar={count !== 2}
+              statusbarControls={
                 <ControlGroup fill={true} vertical={false}>
-
-                  <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{cursor: "pointer"}} />
-                  <InputGroup placeholder="Find filters..." disabled={disabled}/>
-                  <Button icon="arrow-right" disabled={disabled}/>
+                  <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{ cursor: 'pointer' }} />
+                  <InputGroup placeholder="Find filters..." disabled={disabled} />
+                  <Button icon="arrow-right" disabled={disabled} />
 
                   <InputGroup
                     disabled={disabled}
@@ -140,8 +134,8 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
                     rightElement={permissionsMenu}
                     small={small}
                   />
-                  </ControlGroup>
-              )}
+                </ControlGroup>
+              }
               title={`Window ${count}`}
               createNode={this.createNode}
               path={path}
@@ -223,8 +217,9 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
       <div className={classNames(Classes.NAVBAR, Classes.DARK)}>
         <div className={Classes.NAVBAR_GROUP}>
           <div className={Classes.NAVBAR_HEADING}>
-            
-            <img src={gitHubLogo} /> <a className="github-link" href="https://github.com/robertu/mosaicrwm">mosaic react window manager <span className="version">v{version}</span>
+            <img src={gitHubLogo} />{' '}
+            <a className="github-link" href="https://github.com/robertu/mosaicrwm">
+              mosaic react window manager <span className="version">v{version}</span>
             </a>
           </div>
         </div>
@@ -252,7 +247,6 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
           >
             Add Window to Top Right
           </button>
-
         </div>
       </div>
     );

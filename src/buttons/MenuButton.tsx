@@ -1,5 +1,5 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 import { MosaicWindowContext } from '../contextTypes';
 import { MosaicKey } from '../types';
 import { OptionalBlueprint } from '../util/OptionalBlueprint';
@@ -17,12 +17,11 @@ export class MenuButton<T extends MosaicKey> extends React.PureComponent<MosaicM
       expanded,
       this.remove,
       this.expand,
-      this.restore
+      this.restore,
     );
   }
 
   private remove = () => {
-    console.log('remove on menuButton');
     this.context.mosaicActions.remove(this.context.mosaicWindowActions.getPath());
     if (this.props.onClickClose) {
       this.props.onClickClose();
