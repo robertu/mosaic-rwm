@@ -14,8 +14,7 @@ import {
   DropTarget,
 } from 'react-dnd';
 
-import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION, DEFAULT_CONTROLS_WITH_CREATION_EXPANDED, DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED, DEFAULT_WINDOW_ICON } from './buttons/defaultToolbarControls';
-import { Separator } from './buttons/Separator';
+import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION, DEFAULT_CONTROLS_WITH_CREATION_EXPANDED, DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED } from './buttons/defaultToolbarControls';
 import {
   ModernMosaicWindowContext,
   MosaicContext,
@@ -28,6 +27,7 @@ import { CreateNode, MosaicBranch, MosaicDirection, MosaicDragType, MosaicKey } 
 import { createDragToUpdates } from './util/mosaicUpdates';
 import { getAndAssertNodeAtPathExists } from './util/mosaicUtilities';
 import { OptionalBlueprint } from './util/OptionalBlueprint';
+import { MenuButton } from './buttons/MenuButton';
 
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
@@ -37,7 +37,6 @@ export interface MosaicWindowProps<T extends MosaicKey> {
   statusbarControls?: React.ReactNode;
   toolbarWindowIcon?: React.ReactNode;
   additionalControls?: React.ReactNode;
-  additionalControlButtonText?: string;
   draggable?: boolean;
   statusbar?: boolean;
   createNode?: CreateNode<T>;
@@ -73,7 +72,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   InternalMosaicWindowState
 > {
   static defaultProps: Partial<InternalMosaicWindowProps<any>> = {
-    additionalControlButtonText: 'More',
     draggable: true,
     renderPreview: ({ title }) => (
       <div className="mosaic-preview">
@@ -112,7 +110,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       className,
       isOver,
       renderPreview,
-      additionalControls,
       connectDropTarget,
       connectDragPreview,
       draggedMosaicId,
@@ -131,8 +128,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
           >
             {this.renderToolbar()}
             <div className="mosaic-window-body mosaic-window-body-statusbar">{this.props.children!}</div>
-            <div className="mosaic-window-body-overlay" onClick={() => this.setAdditionalControlsOpen(false)} />
-            <div className="mosaic-window-additional-actions-bar">{additionalControls}</div>
             {connectDragPreview(renderPreview!(this.props))}
             <div className="drop-target-container">
               {values<MosaicDropTargetPosition>(MosaicDropTargetPosition).map(this.renderDropTarget)}
@@ -147,7 +142,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   private getToolbarControls() {
     const { toolbarControls, createNode } = this.props;
     const { expanded } = this.state;
-    if (toolbarControls) {
+    if (toolbarControls !== undefined && toolbarControls !== true) {
       return toolbarControls;
     } else if (createNode) {
       return expanded ? DEFAULT_CONTROLS_WITH_CREATION_EXPANDED : DEFAULT_CONTROLS_WITH_CREATION;
@@ -170,10 +165,12 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
 
   private getToolbarWindowIcon() {
     const { toolbarWindowIcon } = this.props;
+    const { expanded } = this.state;
+
     if (toolbarWindowIcon) {
       return toolbarWindowIcon;
     } else {
-      return DEFAULT_WINDOW_ICON;
+      return <MenuButton expanded={expanded} />;
     }
   }
 
@@ -182,13 +179,11 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       title,
       draggable,
       additionalControls,
-      additionalControlButtonText,
       connectDragSource,
       path,
       renderToolbar,
     } = this.props;
     const { expanded } = this.state;
-    const { additionalControlsOpen } = this.state;
     const toolbarControls = this.getToolbarControls();
     const toolbarWindowIcon = this.getToolbarWindowIcon();
     const draggableAndNotRoot = draggable && path.length > 0 && !expanded;
@@ -219,21 +214,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
         {toolbarWindowIcon}
         {titleDiv}
         <div className={classNames('mosaic-window-controls', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
-          {hasAdditionalControls && (
-            <button
-              onClick={() => this.setAdditionalControlsOpen(!additionalControlsOpen)}
-              className={classNames(
-                OptionalBlueprint.getClasses('BUTTON', 'MINIMAL'),
-                OptionalBlueprint.getIconClass('MORE'),
-                {
-                  [OptionalBlueprint.getClasses('ACTIVE')]: additionalControlsOpen,
-                },
-              )}
-            >
-              <span className="control-text">{additionalControlButtonText!}</span>
-            </button>
-          )}
-          {hasAdditionalControls && <Separator />}
+          {hasAdditionalControls && additionalControls}
           {toolbarControls}
         </div>
       </div>

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Popover, Position, Button } from "@blueprintjs/core";
+import { Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Popover, Position } from "@blueprintjs/core";
 
 import { OptionalBlueprint } from '../util/OptionalBlueprint';
 
@@ -23,46 +23,43 @@ export function createDefaultToolbarButton(
 }
 
 export function createMenuToolbarButton(
-  // title: string,
-  // className: string,
+  className: string,
+  is_window_expanded: boolean,
+  onClickClose: (event: React.MouseEvent<any>) => any,
+  onClickExpand: (event: React.MouseEvent<any>) => any,
+  onClickRestore: (event: React.MouseEvent<any>) => any,
 ): React.ReactElement<any> {
   return (
     <Popover
       content={
         <Menu>
-          <MenuItem icon="new-text-box" text="New text 2" />
-          <MenuItem icon="new-object" text="New object" />
-          <MenuItem icon="new-link" text="New link" />
-          <MenuDivider />
-          <MenuItem icon="cog" text="Settings..." />
+          {is_window_expanded ? <MenuItem icon="minimize" text="Restore window" onClick={onClickRestore} /> : <MenuItem icon="maximize" text="Maximize window" onClick={onClickExpand} /> }
           <MenuDivider />
           <MenuItem
-            icon="share"
-            text="Logout"
+            icon="cross"
+            text="Close window"
+            onClick={(e: any) => { console.log("fired!");onClickClose(e); }}
           />
         </Menu>
       }
       position={Position.BOTTOM_LEFT}
       minimal
     >
-      <Button
-        className={Classes.MINIMAL}
-        icon="document"
-        text={null}
-      />
+      <button        
+        className={classNames('mosaic-default-control', OptionalBlueprint.getClasses('BUTTON', 'MINIMAL'), className)}
+       />
     </Popover>
   );
-  // return (
-  //   <button
-  //     title={title}
-  //     onClick={onClick}
-  //     className={classNames('mosaic-default-control', OptionalBlueprint.getClasses('BUTTON', 'MINIMAL'), className)}
-  //   >
-  //     {text && <span className="control-text">{text}</span>}
-  //   </button>
-  // );
 }
 
 export interface MosaicButtonProps {
   onClick?: () => void;
+}
+
+export interface MosaicMenuButtonProps {
+  expanded: boolean;
+  onClickClose?: () => void;
+  onClickExpand?: () => void;
+  onClickRestore?: () => void;
+  menu?: React.ReactElement;
 }

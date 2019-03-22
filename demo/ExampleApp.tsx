@@ -31,8 +31,6 @@ import {
   MosaicZeroState,
   updateTree,
 } from '../src';
-import { MenuButton } from "../src/buttons/MenuButton";
-import { CloseAdditionalControlsButton } from './CloseAdditionalControlsButton';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -57,9 +55,7 @@ export const THEMES = {
 
 export type Theme = keyof typeof THEMES;
 
-const additionalControls = React.Children.toArray([<CloseAdditionalControlsButton />]);
-
-const EMPTY_ARRAY: any[] = [];
+const additionalToolbarButtons = React.Children.toArray([<Button minimal icon="add-to-folder" />, ]);
 
 export interface ExampleAppState {
   currentNode: MosaicNode<number> | null;
@@ -118,7 +114,8 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
         <Mosaic<number>
           renderTile={(count, path) => (
             <MosaicWindow<number>
-              additionalControls={count === 3 ? additionalControls : EMPTY_ARRAY}
+              additionalControls={count === 3 ? additionalToolbarButtons : null}
+              toolbarControls={count == 1 ? <Button minimal icon="help" /> : true}
               statusbar={count!==2}
               statusbarControls={(
                 <ControlGroup fill={true} vertical={false}>
@@ -144,16 +141,12 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
                     small={small}
                   />
                   </ControlGroup>
-
-
               )}
-              toolbarWindowIcon={count===2 ? <Button minimal icon="cross" /> : <MenuButton />}
               title={`Window ${count}`}
               createNode={this.createNode}
               path={path}
               onDragStart={() => console.log('MosaicWindow.onDragStart')}
               onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
-              renderToolbar={count === 2 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
             >
               <div className="example-window">
                 <h1>{`Window ${count}`}</h1>
