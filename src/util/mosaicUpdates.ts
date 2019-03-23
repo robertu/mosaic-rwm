@@ -6,16 +6,7 @@ import last from 'lodash/last';
 import set from 'lodash/set';
 import take from 'lodash/take';
 import { MosaicDropTargetPosition } from '../internalTypes';
-import {
-  MosaicBranch,
-  MosaicDirection,
-  MosaicKey,
-  MosaicNode,
-  MosaicParent,
-  MosaicPath,
-  MosaicUpdate,
-  MosaicUpdateSpec,
-} from '../types';
+import { MosaicBranch, MosaicDirection, MosaicKey, MosaicNode, MosaicParent, MosaicPath, MosaicUpdate, MosaicUpdateSpec } from '../types';
 import { getAndAssertNodeAtPathExists, getOtherBranch } from './mosaicUtilities';
 
 // https://github.com/Microsoft/TypeScript/issues/9944
@@ -94,9 +85,7 @@ export function createDragToUpdates<T extends MosaicKey>(
   const destinationIsParentOfSource = isPathPrefixEqual(sourcePath, destinationPath, destinationPath.length);
   if (destinationIsParentOfSource) {
     // Must explicitly remove source from the destination node
-    destinationNode = updateTree(destinationNode, [
-      createRemoveUpdate(destinationNode, drop(sourcePath, destinationPath.length)),
-    ]);
+    destinationNode = updateTree(destinationNode, [createRemoveUpdate(destinationNode, drop(sourcePath, destinationPath.length))]);
   } else {
     // Can remove source normally
     updates.push(createRemoveUpdate(root, sourcePath));

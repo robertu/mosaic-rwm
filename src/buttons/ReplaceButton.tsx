@@ -12,11 +12,7 @@ export class ReplaceButton<T extends MosaicKey> extends React.PureComponent<Mosa
   context!: MosaicWindowContext<T>;
 
   render() {
-    return createDefaultToolbarButton(
-      'Replace Window',
-      classNames('replace-button', OptionalBlueprint.getIconClass('EXCHANGE')),
-      this.replace,
-    );
+    return createDefaultToolbarButton('Replace Window', classNames('replace-button', OptionalBlueprint.getIconClass('EXCHANGE')), this.replace);
   }
 
   private replace = () => {

@@ -14,26 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export {
-  Mosaic,
-  MosaicProps,
-  MosaicUncontrolledProps,
-  MosaicControlledProps,
-  MosaicFactory,
-  MosaicWithoutDragDropContext,
-} from './Mosaic';
-export {
-  MosaicNode,
-  MosaicDragType,
-  MosaicDirection,
-  MosaicBranch,
-  CreateNode,
-  MosaicParent,
-  MosaicPath,
-  MosaicUpdate,
-  MosaicUpdateSpec,
-  TileRenderer,
-} from './types';
+export { Mosaic, MosaicProps, MosaicUncontrolledProps, MosaicControlledProps, MosaicFactory, MosaicWithoutDragDropContext } from './Mosaic';
+export { MosaicNode, MosaicDragType, MosaicDirection, MosaicBranch, CreateNode, MosaicParent, MosaicPath, MosaicUpdate, MosaicUpdateSpec, TileRenderer } from './types';
 export {
   MosaicContext,
   MosaicActionsPropType,
@@ -44,14 +26,7 @@ export {
   ModernMosaicContext,
   ModernMosaicWindowContext,
 } from './contextTypes';
-export {
-  buildSpecFromUpdate,
-  createDragToUpdates,
-  createExpandUpdate,
-  createHideUpdate,
-  createRemoveUpdate,
-  updateTree,
-} from './util/mosaicUpdates';
+export { buildSpecFromUpdate, createDragToUpdates, createExpandUpdate, createHideUpdate, createRemoveUpdate, updateTree } from './util/mosaicUpdates';
 export {
   createBalancedTreeFromLeaves,
   Corner,

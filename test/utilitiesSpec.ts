@@ -4,14 +4,7 @@ import min from 'lodash/min';
 import range from 'lodash/range';
 
 import { getNodeAtPath, MosaicNode } from '../src/index';
-import {
-  Corner,
-  createBalancedTreeFromLeaves,
-  getAndAssertNodeAtPathExists,
-  getLeaves,
-  getPathToCorner,
-  isParent,
-} from '../src/util/mosaicUtilities';
+import { Corner, createBalancedTreeFromLeaves, getAndAssertNodeAtPathExists, getLeaves, getPathToCorner, isParent } from '../src/util/mosaicUtilities';
 
 const ROOT_ONLY_TREE: MosaicNode<number> = 1;
 const MEDIUM_TREE: MosaicNode<number> = {

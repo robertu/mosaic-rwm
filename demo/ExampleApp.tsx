@@ -1,7 +1,4 @@
-import { Classes, HTMLSelect } from '@blueprintjs/core';
-import { Button, ControlGroup, InputGroup, Menu, MenuItem, Popover, Position, Tag } from '@blueprintjs/core';
-import { FocusStyleManager } from '@blueprintjs/core';
-
+import { Button, Classes, ControlGroup, FocusStyleManager, HTMLSelect, InputGroup, Menu, MenuItem, Popover, Position, Tag } from '@blueprintjs/core';
 // import { IconNames } from '@blueprintjs/icons';
 import classNames from 'classnames';
 import dropRight from 'lodash/dropRight';
@@ -23,7 +20,7 @@ import {
   updateTree,
 } from '../src';
 
-import AppHeader from './AppHeader';
+import { AppHeader } from './AppHeader';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -44,11 +41,11 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
   state: ExampleAppState = {
     currentNode: {
       direction: 'row',
-      first: "A",
+      first: 'A',
       second: {
         direction: 'column',
-        first: "B",
-        second: "C",
+        first: 'B',
+        second: 'C',
       },
       splitPercentage: 40,
     },
@@ -82,13 +79,7 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
     );
 
     const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
-    const FILTER_OPTIONS = [
-      'Filter',
-      'Name - ascending',
-      'Name - descending',
-      'Price - ascending',
-      'Price - descending',
-    ];
+    const FILTER_OPTIONS = ['Filter', 'Name - ascending', 'Name - descending', 'Price - ascending', 'Price - descending'];
 
     return (
       <div className="react-mosaic-example-app">
@@ -96,37 +87,25 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
         <Mosaic<string>
           renderTile={(name, path) => (
             <MosaicWindow<string>
-              additionalControls={name === "A" ? additionalToolbarButtons : null}
-              toolbarControls={name === "B" ? <Button minimal={true} icon="help" /> : true}
-              statusbar={name !== "C"}
+              additionalControls={name === 'A' ? additionalToolbarButtons : null}
+              toolbarControls={name === 'B' ? <Button minimal={true} icon="help" /> : true}
+              statusbar={name !== 'C'}
               statusbarControls={
                 <ControlGroup fill={true} vertical={false}>
                   <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{ cursor: 'pointer' }} />
                   <InputGroup placeholder="Find filters..." disabled={disabled} />
                   <Button icon="arrow-right" disabled={disabled} />
 
-                  <InputGroup
-                    disabled={disabled}
-                    large={large}
-                    leftIcon="tag"
-                    placeholder="Find tags"
-                    rightElement={resultsTag}
-                    small={small}
-                    value={tagValue}
-                  />
-                  <InputGroup
-                    disabled={disabled}
-                    large={large}
-                    placeholder="Add people or groups..."
-                    rightElement={permissionsMenu}
-                    small={small}
-                  />
+                  <InputGroup disabled={disabled} large={large} leftIcon="tag" placeholder="Find tags" rightElement={resultsTag} small={small} value={tagValue} />
+                  <InputGroup disabled={disabled} large={large} placeholder="Add people or groups..." rightElement={permissionsMenu} small={small} />
                 </ControlGroup>
               }
               title={`Window ${name}`}
-              createNode={this.createNode("dummy")}
+              createNode={this.createNode('dummy')}
               path={path}
+              // tslint:disable-next-line:no-console
               onDragStart={() => console.log('MosaicWindow.onDragStart')}
+              // tslint:disable-next-line:no-console
               onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
             >
               <div className="example-window">
@@ -134,18 +113,18 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
               </div>
             </MosaicWindow>
           )}
-          zeroStateView={<MosaicZeroState createNode={this.createNode("dummy")} />}
+          zeroStateView={<MosaicZeroState createNode={this.createNode('dummy')} />}
           value={this.state.currentNode}
           onChange={this.onChange}
           onRelease={this.onRelease}
-          className={classNames("mosaic-blueprint-theme", this.state.lightTheme ? null : Classes.DARK)}
+          className={classNames('mosaic-blueprint-theme', this.state.lightTheme ? null : Classes.DARK)}
         />
       </div>
     );
   }
   private themeSwitch = () => {
     this.setState({
-      lightTheme: !this.state.lightTheme
+      lightTheme: !this.state.lightTheme,
     });
   };
 
@@ -154,6 +133,7 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
   };
 
   private onRelease = (currentNode: MosaicNode<string> | null) => {
+    // tslint:disable-next-line:no-console
     console.log('Mosaic.onRelease():', currentNode);
   };
 
@@ -181,11 +161,11 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
       const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
       const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<string>;
       const destination = getNodeAtPath(currentNode, path) as MosaicNode<string>;
-      const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : "row";
+      const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : 'row';
 
-      let first;
-      let second;
-      if (direction === "row") {
+      let first: MosaicNode<string>;
+      let second: MosaicNode<string>;
+      if (direction === 'row') {
         first = destination;
         second = created;
       } else {
@@ -200,10 +180,10 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
             $set: {
               direction,
               first,
-              second
-            }
-          }
-        }
+              second,
+            },
+          },
+        },
       ]);
     } else {
       currentNode = created;

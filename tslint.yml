@@ -36,4 +36,6 @@ rules:
   no-default-export: true
   jsx-no-lambda: false
   jsx-key: false
+  ordered-imports: false
+
 

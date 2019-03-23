@@ -11,11 +11,7 @@ export class RestoreButton<T extends MosaicKey> extends React.PureComponent<Mosa
   context!: MosaicWindowContext<T>;
 
   render() {
-    return createDefaultToolbarButton(
-      'Restore',
-      classNames('restore-button', OptionalBlueprint.getIconClass('MINIMIZE')),
-      this.restore,
-    );
+    return createDefaultToolbarButton('Restore', classNames('restore-button', OptionalBlueprint.getIconClass('MINIMIZE')), this.restore);
   }
 
   private restore = () => {

@@ -12,13 +12,7 @@ export class MenuButton<T extends MosaicKey> extends React.PureComponent<MosaicM
 
   render() {
     const expanded = this.context.mosaicWindowActions.isExpanded();
-    return createMenuToolbarButton(
-      classNames('menu-button', OptionalBlueprint.getIconClass('DOCUMENT')),
-      expanded,
-      this.remove,
-      this.expand,
-      this.restore,
-    );
+    return createMenuToolbarButton(classNames('menu-button', OptionalBlueprint.getIconClass('DOCUMENT')), expanded, this.remove, this.expand, this.restore);
   }
 
   private remove = () => {

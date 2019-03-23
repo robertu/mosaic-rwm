@@ -12,11 +12,7 @@ export class SplitButton<T extends MosaicKey> extends React.PureComponent<Mosaic
   context!: MosaicWindowContext<T>;
 
   render() {
-    return createDefaultToolbarButton(
-      'Split Window',
-      classNames('split-button', OptionalBlueprint.getIconClass('ADD_COLUMN_RIGHT')),
-      this.split,
-    );
+    return createDefaultToolbarButton('Split Window', classNames('split-button', OptionalBlueprint.getIconClass('ADD_COLUMN_RIGHT')), this.split);
   }
 
   private split = () => {

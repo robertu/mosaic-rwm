@@ -26,10 +26,7 @@ export class MosaicZeroState<T extends MosaicKey> extends React.PureComponent<Mo
         <h4 className={OptionalBlueprint.getClasses('HEADING')}>No Windows Present</h4>
         <div>
           {this.props.createNode && (
-            <button
-              className={classNames(OptionalBlueprint.getClasses('BUTTON'), OptionalBlueprint.getIconClass('ADD'))}
-              onClick={this.replace}
-            >
+            <button className={classNames(OptionalBlueprint.getClasses('BUTTON'), OptionalBlueprint.getIconClass('ADD'))} onClick={this.replace}>
               Add New Window
             </button>
           )}
@@ -45,14 +42,7 @@ export class MosaicZeroState<T extends MosaicKey> extends React.PureComponent<Mo
 }
 
 // Factory that works with generics
-export function MosaicZeroStateFactory<T extends MosaicKey>(
-  props?: MosaicZeroStateProps<T> & React.Attributes,
-  ...children: React.ReactNode[]
-) {
-  const element: React.ReactElement<MosaicZeroStateProps<T>> = React.createElement(
-    MosaicZeroState as React.ComponentClass<MosaicZeroStateProps<T>>,
-    props,
-    ...children,
-  );
+export function MosaicZeroStateFactory<T extends MosaicKey>(props?: MosaicZeroStateProps<T> & React.Attributes, ...children: React.ReactNode[]) {
+  const element: React.ReactElement<MosaicZeroStateProps<T>> = React.createElement(MosaicZeroState as React.ComponentClass<MosaicZeroStateProps<T>>, props, ...children);
   return element;
 }

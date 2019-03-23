@@ -56,15 +56,7 @@ describe('mosaicUpdates', () => {
   });
   describe('createDragToUpdates', () => {
     describe('drag leaf to unrelated leaf', () => {
-      const updatedTree = updateTree(
-        MEDIUM_TREE,
-        createDragToUpdates(
-          MEDIUM_TREE,
-          ['second', 'first', 'second'],
-          ['second', 'second'],
-          MosaicDropTargetPosition.RIGHT,
-        ),
-      );
+      const updatedTree = updateTree(MEDIUM_TREE, createDragToUpdates(MEDIUM_TREE, ['second', 'first', 'second'], ['second', 'second'], MosaicDropTargetPosition.RIGHT));
       it('should remove sourceNode', () => {
         expect(getNodeAtPath(updatedTree, ['second', 'first', 'second'])).to.equal(null);
       });
@@ -82,10 +74,7 @@ describe('mosaicUpdates', () => {
       });
     });
     describe('drag leaf to unrelated parent', () => {
-      const updatedTree = updateTree(
-        MEDIUM_TREE,
-        createDragToUpdates(MEDIUM_TREE, ['first'], ['second', 'first'], MosaicDropTargetPosition.TOP),
-      );
+      const updatedTree = updateTree(MEDIUM_TREE, createDragToUpdates(MEDIUM_TREE, ['first'], ['second', 'first'], MosaicDropTargetPosition.TOP));
       it('should remove sourceNode', () => {
         expect(getNodeAtPath(updatedTree, ['first'])).to.not.equal(1);
       });
@@ -100,10 +89,7 @@ describe('mosaicUpdates', () => {
       });
     });
     describe('drag leaf to root', () => {
-      const updatedTree = updateTree(
-        MEDIUM_TREE,
-        createDragToUpdates(MEDIUM_TREE, ['second', 'second'], [], MosaicDropTargetPosition.RIGHT),
-      );
+      const updatedTree = updateTree(MEDIUM_TREE, createDragToUpdates(MEDIUM_TREE, ['second', 'second'], [], MosaicDropTargetPosition.RIGHT));
       it('should remove sourceNode', () => {
         expect(getNodeAtPath(updatedTree, ['first', 'second', 'second'])).to.equal(3);
       });

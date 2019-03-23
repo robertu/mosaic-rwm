@@ -23,11 +23,7 @@ export class MosaicRoot<T extends MosaicKey> extends React.PureComponent<MosaicR
     return <div className="mosaic-root">{this.renderRecursively(root, BoundingBox.empty(), [])}</div>;
   }
 
-  private renderRecursively(
-    node: MosaicNode<T>,
-    boundingBox: BoundingBox,
-    path: MosaicBranch[],
-  ): JSX.Element | JSX.Element[] {
+  private renderRecursively(node: MosaicNode<T>, boundingBox: BoundingBox, path: MosaicBranch[]): JSX.Element | JSX.Element[] {
     // const single = this.context.mosaicActions.getSingle(); // TODO: single
     if (isParent(node)) {
       const splitPercentage = node.splitPercentage === undefined ? 50 : node.splitPercentage;
@@ -48,12 +44,7 @@ export class MosaicRoot<T extends MosaicKey> extends React.PureComponent<MosaicR
     }
   }
 
-  private renderSplit(
-    direction: MosaicDirection,
-    boundingBox: BoundingBox,
-    splitPercentage: number,
-    path: MosaicBranch[],
-  ) {
+  private renderSplit(direction: MosaicDirection, boundingBox: BoundingBox, splitPercentage: number, path: MosaicBranch[]) {
     const { resize } = this.props;
     if (resize !== 'DISABLED') {
       return (

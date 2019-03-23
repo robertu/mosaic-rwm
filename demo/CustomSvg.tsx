@@ -1,31 +1,17 @@
-import { Classes } from "@blueprintjs/core";
-import React from "react";
+import { Classes } from '@blueprintjs/core';
+import React from 'react';
 
-type SvgProps = {
+interface SvgProps {
   light_theme: boolean;
   width: number;
   height: number;
-};
+}
 
 export const CustomSvg = ({ light_theme, width, height }: SvgProps) => {
-  const fill = light_theme === true ? "#394b59" : "#bfccd6";
+  const fill = light_theme === true ? '#394b59' : '#bfccd6';
   return (
-    <svg
-      className={Classes.ICON}
-      width={width}
-      height={height}
-      viewBox="0 0 216 91"
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-
-      <g
-        id="Page-1"
-        stroke="none"
-        stroke-width="1"
-        fill="none"
-        fill-rule="evenodd"
-      >
+    <svg className={Classes.ICON} width={width} height={height} viewBox="0 0 216 91" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="BASH_logo-transparent-bg-bw">
           <g id="Group-3" transform="translate(0.000000, -0.290000)">
             <g id="Clip-2" />
@@ -106,12 +92,7 @@ export const CustomSvg = ({ light_theme, width, height }: SvgProps) => {
             points="146.1201 73.6643 143.7711 73.6643 143.7711 75.3683 146.5201 75.3683 146.5201 76.0983 142.8261 76.0983 142.8261 70.6703 146.4921 70.6703 146.4921 71.4083 143.7711 71.4083 143.7711 72.9403 146.1201 72.9403"
           />
           <g id="Clip-32" />
-          <polygon
-            id="Fill-31"
-            fill={fill}
-            mask="url(#mask-6)"
-            points="148.91 74.078 152.05 74.078 152.05 73.359 148.91 73.359"
-          />
+          <polygon id="Fill-31" fill={fill} mask="url(#mask-6)" points="148.91 74.078 152.05 74.078 152.05 73.359 148.91 73.359" />
           <path
             d="M155.4826,74.0741 L156.7916,74.0741 L156.1456,71.9461 L155.4826,74.0741 Z M157.0276,74.8391 L155.2436,74.8391 L154.8516,76.0991 L153.8786,76.0991 L155.7336,70.6701 L156.5606,70.6701 L158.3806,76.0991 L157.4116,76.0991 L157.0276,74.8391 Z"
             id="Fill-33"
@@ -160,18 +141,8 @@ export const CustomSvg = ({ light_theme, width, height }: SvgProps) => {
             mask="url(#mask-6)"
             points="203.5408 73.6643 201.1918 73.6643 201.1918 75.3683 203.9408 75.3683 203.9408 76.0983 200.2468 76.0983 200.2468 70.6703 203.9128 70.6703 203.9128 71.4083 201.1918 71.4083 201.1918 72.9403 203.5408 72.9403"
           />
-          <polygon
-            id="Fill-41"
-            fill={fill}
-            mask="url(#mask-6)"
-            points="206.9696 75.3686 209.6906 75.3686 209.6906 76.0986 206.0286 76.0986 206.0286 70.6706 206.9696 70.6706"
-          />
-          <polygon
-            id="Fill-42"
-            fill={fill}
-            mask="url(#mask-6)"
-            points="212.7118 75.3686 215.4328 75.3686 215.4328 76.0986 211.7708 76.0986 211.7708 70.6706 212.7118 70.6706"
-          />
+          <polygon id="Fill-41" fill={fill} mask="url(#mask-6)" points="206.9696 75.3686 209.6906 75.3686 209.6906 76.0986 206.0286 76.0986 206.0286 70.6706 206.9696 70.6706" />
+          <polygon id="Fill-42" fill={fill} mask="url(#mask-6)" points="212.7118 75.3686 215.4328 75.3686 215.4328 76.0986 211.7708 76.0986 211.7708 70.6706 212.7118 70.6706" />
         </g>
       </g>
     </svg>
