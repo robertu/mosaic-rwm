@@ -24,3 +24,12 @@ deployment:
       - printf "\n$NPM_REGISTRY_CREDS\n" >> .npmrc
       - yarn run build
       - npm publish
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.13.0
+
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn test
