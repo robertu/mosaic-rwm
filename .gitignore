@@ -1,7 +1,7 @@
 .idea/
 node_modules/
 lib/
-/mosaicrwm.css*
+/style.css*
 .*.swp
 .env.local
 mosaicrwm.tar.bz2

@@ -4,7 +4,7 @@
   "description": "A React Tiling Window Manager",
   "license": "Apache-2.0",
   "main": "lib/index.js",
-  "style": "mosaicrwm.css",
+  "style": "style.css",
   "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "scripts": {
     "build": "npm-run-all clean build:ts build:less",
     "build:ts": "tsc -p tsconfig-build.json",
-    "build:less": "lessc --source-map styles/index.less mosaicrwm.css",
+    "build:less": "lessc --source-map styles/index.less style.css",
     "bundle": "rm -rf docs/ && webpack --config webpack/bundle.ts",
     "clean": "rm -rf lib/",
     "start": "webpack-dev-server --config webpack/hot.ts",
