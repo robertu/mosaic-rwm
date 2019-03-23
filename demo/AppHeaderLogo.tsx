@@ -2,13 +2,13 @@ import { Classes } from '@blueprintjs/core';
 import React from 'react';
 
 interface SvgProps {
-  light_theme: boolean;
+  lightTheme: boolean;
   width: number;
   height: number;
 }
 
-export const CustomSvg = ({ light_theme, width, height }: SvgProps) => {
-  const fill = light_theme === true ? '#394b59' : '#bfccd6';
+export const AppHeaderLogo = ({ lightTheme, width, height }: SvgProps) => {
+  const fill = lightTheme === true ? '#394b59' : '#bfccd6';
   return (
     <svg className={Classes.ICON} width={width} height={height} viewBox="0 0 216 91" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

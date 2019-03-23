@@ -1,31 +1,31 @@
 import { Alignment, Button, Classes, Icon, Menu, MenuDivider, MenuItem, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Popover, Position } from '@blueprintjs/core';
-import { CustomSvg } from './CustomSvg';
+import { AppHeaderLogo } from './AppHeaderLogo';
 import React, { MouseEvent } from 'react';
 
 // tslint:disable-next-line:no-var-requires
 const { version } = require('../package.json');
 
 interface ThemedIconProps {
-  light_theme: boolean;
+  lightTheme: boolean;
 }
 
 interface ThemedHeaderProps {
-  light_theme: boolean;
+  lightTheme: boolean;
   themeSwitch: () => void;
   autoArrange: () => void;
   addToTopRight: (name: string) => (event: MouseEvent) => void;
 }
 
-const CustomLogo = ({ light_theme }: ThemedIconProps) => <CustomSvg width={80} height={32} light_theme={light_theme} />;
+const CustomLogo = ({ lightTheme }: ThemedIconProps) => <AppHeaderLogo width={80} height={32} lightTheme={lightTheme} />;
 
-export const AppHeader = ({ light_theme, themeSwitch, autoArrange, addToTopRight }: ThemedHeaderProps) => (
-  <Navbar className={light_theme ? undefined : Classes.DARK}>
+export const AppHeader = ({ lightTheme, themeSwitch, autoArrange, addToTopRight }: ThemedHeaderProps) => (
+  <Navbar className={lightTheme ? undefined : Classes.DARK}>
     <NavbarGroup align={Alignment.LEFT}>
       <Popover
         content={
           <Menu>
             <MenuItem icon="grid-view" text="Rearrange windows" onClick={autoArrange} />
-            <MenuItem icon="contrast" text={light_theme ? 'Switch to dark theme' : 'Switch to light theme'} onClick={themeSwitch} />
+            <MenuItem icon="contrast" text={lightTheme ? 'Switch to dark theme' : 'Switch to light theme'} onClick={themeSwitch} />
             <MenuDivider />
             <MenuItem icon="new-text-box" text="New text 2" />
             <MenuItem icon="new-object" text="New object" />
@@ -39,7 +39,7 @@ export const AppHeader = ({ light_theme, themeSwitch, autoArrange, addToTopRight
         position={Position.BOTTOM_LEFT}
         minimal={true}
       >
-        <Button className={Classes.MINIMAL} icon={<CustomLogo light_theme={light_theme} />} text={null} />
+        <Button className={Classes.MINIMAL} icon={<CustomLogo lightTheme={lightTheme} />} text={null} />
       </Popover>
       <NavbarDivider />
       <Popover
@@ -99,7 +99,7 @@ export const AppHeader = ({ light_theme, themeSwitch, autoArrange, addToTopRight
           <Menu>
             <MenuItem icon="new-text-box" text="New text" />
             <MenuItem icon="new-object" text="New object" />
-            <MenuItem icon="contrast" text={light_theme ? 'Switch to dark theme' : 'Switch to light theme'} onClick={themeSwitch} />
+            <MenuItem icon="contrast" text={lightTheme ? 'Switch to dark theme' : 'Switch to light theme'} onClick={themeSwitch} />
             <MenuDivider />
             <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." />
           </Menu>

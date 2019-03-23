@@ -25,20 +25,20 @@ import { AppHeader } from './AppHeader';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '../styles/index.less';
-import './example.less';
+import './App.less';
 
 let windowCount = 0;
 FocusStyleManager.onlyShowFocusOnTabs();
 
 const additionalToolbarButtons = React.Children.toArray([<Button minimal={true} icon="add-to-folder" />]);
 
-export interface ExampleAppState {
+export interface AppState {
   currentNode: MosaicNode<string> | null;
   lightTheme: boolean;
 }
 
-export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
-  state: ExampleAppState = {
+export class App extends React.PureComponent<{}, AppState> {
+  state: AppState = {
     currentNode: {
       direction: 'row',
       first: 'A',
@@ -82,8 +82,8 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
     const FILTER_OPTIONS = ['Filter', 'Name - ascending', 'Name - descending', 'Price - ascending', 'Price - descending'];
 
     return (
-      <div className="react-mosaic-example-app">
-        <AppHeader light_theme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} addToTopRight={this.addToTopRight} />
+      <div className="react-mosaic-app">
+        <AppHeader lightTheme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} addToTopRight={this.addToTopRight} />
         <Mosaic<string>
           renderTile={(name, path) => (
             <MosaicWindow<string>
@@ -101,7 +101,7 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
                 </ControlGroup>
               }
               title={`Window ${name}`}
-              createNode={this.createNode('dummy')}
+              createNode={this.createNode('FROM-WINDOW')}
               path={path}
               // tslint:disable-next-line:no-console
               onDragStart={() => console.log('MosaicWindow.onDragStart')}
