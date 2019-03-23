@@ -2,7 +2,7 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/robertu/mosaicrwm/master.svg)](https://circleci.com/gh/robertu/mosaicrwm)
 [![npm](https://img.shields.io/npm/v/mosaicrwm.svg)](https://www.npmjs.com/package/mosaicrwm)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 mosaicrwm is a full-featured React Tiling Window Manager meant to give a user complete control over their workspace.
 It provides a simple and flexible API to tile arbitrarily complex react components across a user's view.
