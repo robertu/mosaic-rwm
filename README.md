@@ -1,13 +1,16 @@
 # mosaicrwm
 
 [![CircleCI](https://img.shields.io/circleci/project/github/robertu/mosaicrwm/master.svg)](https://circleci.com/gh/robertu/mosaicrwm)
-[![npm](https://img.shields.io/npm/v/react-mosaic-component.svg)](https://www.npmjs.com/package/react-mosaic-component)
+[![npm](https://img.shields.io/npm/v/mosaicrwm.svg)](https://www.npmjs.com/package/mosaicrwm)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+
 
 react-mosaic is a full-featured React Tiling Window Manager meant to give a user complete control over their workspace.
 It provides a simple and flexible API to tile arbitrarily complex react components across a user's view.
 react-mosaic is written in TypeScript and provides typings but can be used in JavaScript as well.
 
-The best way to see it is a simple [**Demo**](https://nomcopter.github.io/react-mosaic/).
+The best way to see it is a simple [**Demo**](https://robertu.github.io/mosaicrwm-sample-app1/).
 
 #### Screencast
 
@@ -15,13 +18,13 @@ The best way to see it is a simple [**Demo**](https://nomcopter.github.io/react-
 
 ## Usage
 
-The core of react-mosaic's operations revolve around the simple binary tree [specified by `MosaicNode<T>`](./src/types.ts#L27).
+The core of mosaicrwm's operations revolve around the simple binary tree [specified by `MosaicNode<T>`](./src/types.ts#L27).
 [`T`](./src/types.ts#L22) is the type of the leaves of the tree and is a `string` or a `number` that can be resolved to a `JSX.Element` for display.
 
 ### Installation
 
 1.  `yarn add mosaicrwm`
-1.  Make sure `mosaicrwm.css` is included on your page.
+1.  Make sure `mosaicrwm/mosaicrwm.css` is included on your page.
 1.  Import the `Mosaic` component and use it in your app.
 1.  (Optional) Install Blueprint
 

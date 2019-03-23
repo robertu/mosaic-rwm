@@ -2,7 +2,7 @@ import { Classes, HTMLSelect } from '@blueprintjs/core';
 import { Button, ControlGroup, InputGroup, Menu, MenuItem, Popover, Position, Tag } from '@blueprintjs/core';
 import { FocusStyleManager } from '@blueprintjs/core';
 
-import { IconNames } from '@blueprintjs/icons';
+// import { IconNames } from '@blueprintjs/icons';
 import classNames from 'classnames';
 import dropRight from 'lodash/dropRight';
 import React from 'react';
@@ -23,49 +23,36 @@ import {
   updateTree,
 } from '../src';
 
+import AppHeader from './AppHeader';
+
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '../styles/index.less';
 import './example.less';
 
-// tslint:disable no-console
-
-// tslint:disable-next-line no-var-requires
-const gitHubLogo = require('./GitHub-Mark-Light-32px.png');
-// tslint:disable-next-line no-var-requires
-const { version } = require('../package.json');
-
-let windowCount = 3;
+let windowCount = 0;
 FocusStyleManager.onlyShowFocusOnTabs();
-
-export const THEMES = {
-  ['Blueprint']: 'mosaic-blueprint-theme',
-  ['Blueprint Dark']: classNames('mosaic-blueprint-theme', Classes.DARK),
-  ['None']: '',
-};
-
-export type Theme = keyof typeof THEMES;
 
 const additionalToolbarButtons = React.Children.toArray([<Button minimal={true} icon="add-to-folder" />]);
 
 export interface ExampleAppState {
-  currentNode: MosaicNode<number> | null;
-  currentTheme: Theme;
+  currentNode: MosaicNode<string> | null;
+  lightTheme: boolean;
 }
 
 export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
   state: ExampleAppState = {
     currentNode: {
       direction: 'row',
-      first: 1,
+      first: "A",
       second: {
         direction: 'column',
-        first: 2,
-        second: 3,
+        first: "B",
+        second: "C",
       },
       splitPercentage: 40,
     },
-    currentTheme: 'Blueprint',
+    lightTheme: true,
   };
 
   render() {
@@ -105,13 +92,13 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
 
     return (
       <div className="react-mosaic-example-app">
-        {this.renderNavBar()}
-        <Mosaic<number>
-          renderTile={(count, path) => (
-            <MosaicWindow<number>
-              additionalControls={count === 3 ? additionalToolbarButtons : null}
-              toolbarControls={count === 1 ? <Button minimal={true} icon="help" /> : true}
-              statusbar={count !== 2}
+        <AppHeader light_theme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} addToTopRight={this.addToTopRight} />
+        <Mosaic<string>
+          renderTile={(name, path) => (
+            <MosaicWindow<string>
+              additionalControls={name === "A" ? additionalToolbarButtons : null}
+              toolbarControls={name === "B" ? <Button minimal={true} icon="help" /> : true}
+              statusbar={name !== "C"}
               statusbarControls={
                 <ControlGroup fill={true} vertical={false}>
                   <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{ cursor: 'pointer' }} />
@@ -136,36 +123,48 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
                   />
                 </ControlGroup>
               }
-              title={`Window ${count}`}
-              createNode={this.createNode}
+              title={`Window ${name}`}
+              createNode={this.createNode("dummy")}
               path={path}
               onDragStart={() => console.log('MosaicWindow.onDragStart')}
               onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
             >
               <div className="example-window">
-                <h1>{`Window ${count}`}</h1>
+                <h1>{`Window ${name}`}</h1>
               </div>
             </MosaicWindow>
           )}
-          zeroStateView={<MosaicZeroState createNode={this.createNode} />}
+          zeroStateView={<MosaicZeroState createNode={this.createNode("dummy")} />}
           value={this.state.currentNode}
           onChange={this.onChange}
           onRelease={this.onRelease}
-          className={THEMES[this.state.currentTheme]}
+          className={classNames("mosaic-blueprint-theme", this.state.lightTheme ? null : Classes.DARK)}
         />
       </div>
     );
   }
+  private themeSwitch = () => {
+    this.setState({
+      lightTheme: !this.state.lightTheme
+    });
+  };
 
-  private onChange = (currentNode: MosaicNode<number> | null) => {
+  private onChange = (currentNode: MosaicNode<string> | null) => {
     this.setState({ currentNode });
   };
 
-  private onRelease = (currentNode: MosaicNode<number> | null) => {
+  private onRelease = (currentNode: MosaicNode<string> | null) => {
     console.log('Mosaic.onRelease():', currentNode);
   };
 
-  private createNode = () => ++windowCount;
+  createNodeContent = (name: string) => {
+    const created = `${name}${++windowCount}`;
+    return created;
+  };
+
+  createNode = (name: string) => () => {
+    return this.createNodeContent(name);
+  };
 
   private autoArrange = () => {
     const leaves = getLeaves(this.state.currentNode);
@@ -175,21 +174,22 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
     });
   };
 
-  private addToTopRight = () => {
+  addToTopRight = (name: string) => () => {
+    const created = this.createNodeContent(name);
     let { currentNode } = this.state;
     if (currentNode) {
       const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
-      const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<number>;
-      const destination = getNodeAtPath(currentNode, path) as MosaicNode<number>;
-      const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : 'row';
+      const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<string>;
+      const destination = getNodeAtPath(currentNode, path) as MosaicNode<string>;
+      const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : "row";
 
-      let first: MosaicNode<number>;
-      let second: MosaicNode<number>;
-      if (direction === 'row') {
+      let first;
+      let second;
+      if (direction === "row") {
         first = destination;
-        second = ++windowCount;
+        second = created;
       } else {
-        first = ++windowCount;
+        first = created;
         second = destination;
       }
 
@@ -200,55 +200,15 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
             $set: {
               direction,
               first,
-              second,
-            },
-          },
-        },
+              second
+            }
+          }
+        }
       ]);
     } else {
-      currentNode = ++windowCount;
+      currentNode = created;
     }
 
     this.setState({ currentNode });
   };
-
-  private renderNavBar() {
-    return (
-      <div className={classNames(Classes.NAVBAR, Classes.DARK)}>
-        <div className={Classes.NAVBAR_GROUP}>
-          <div className={Classes.NAVBAR_HEADING}>
-            <img src={gitHubLogo} />{' '}
-            <a className="github-link" href="https://github.com/robertu/mosaicrwm">
-              mosaic react window manager <span className="version">v{version}</span>
-            </a>
-          </div>
-        </div>
-        <div className={classNames(Classes.NAVBAR_GROUP, Classes.BUTTON_GROUP)}>
-          <label className={classNames('theme-selection', Classes.LABEL, Classes.INLINE)}>
-            Theme:
-            <HTMLSelect
-              value={this.state.currentTheme}
-              onChange={(e) => this.setState({ currentTheme: e.currentTarget.value as Theme })}
-            >
-              {React.Children.toArray(Object.keys(THEMES).map((label) => <option>{label}</option>))}
-            </HTMLSelect>
-          </label>
-          <div className="navbar-separator" />
-          <span className="actions-label">Example Actions:</span>
-          <button
-            className={classNames(Classes.BUTTON, Classes.iconClass(IconNames.GRID_VIEW))}
-            onClick={this.autoArrange}
-          >
-            Auto Arrange
-          </button>
-          <button
-            className={classNames(Classes.BUTTON, Classes.iconClass(IconNames.ARROW_TOP_RIGHT))}
-            onClick={this.addToTopRight}
-          >
-            Add Window to Top Right
-          </button>
-        </div>
-      </div>
-    );
-  }
 }
