@@ -1,10 +1,10 @@
 {
   "name": "mosaicrwm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React Tiling Window Manager",
   "license": "Apache-2.0",
   "main": "lib/index.js",
-  "style": "lib/react-mosaic.css",
+  "style": "mosaicrwm.css",
   "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",

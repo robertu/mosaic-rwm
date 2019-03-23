@@ -31,7 +31,7 @@ export enum Corner {
  * @returns {boolean}
  */
 export function isParent<T extends MosaicKey>(node: MosaicNode<T>): node is MosaicParent<T> {
-  return (node as MosaicParent<T>).direction != null;
+  return (node as MosaicParent<T>).direction !== undefined;
 }
 
 /**

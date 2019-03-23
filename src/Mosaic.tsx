@@ -68,6 +68,7 @@ function isUncontrolled<T extends MosaicKey>(props: MosaicProps<T>): props is Mo
 }
 
 export interface MosaicState<T extends MosaicKey> {
+  singleNode: MosaicPath | null;
   currentNode: MosaicNode<T> | null;
   mosaicId: string;
 }
@@ -91,6 +92,7 @@ export class MosaicWithoutDragDropContext<T extends MosaicKey = string> extends 
   }
 
   state: MosaicState<T> = {
+    singleNode: null,
     currentNode: null,
     mosaicId: uuid(),
   };
@@ -135,6 +137,10 @@ export class MosaicWithoutDragDropContext<T extends MosaicKey = string> extends 
     }
   }
 
+  private getSingle(): MosaicPath | null {
+    return this.state.singleNode;
+  }
+
   private updateRoot = (updates: MosaicUpdate<T>[], suppressOnRelease: boolean = false) => {
     const currentNode = this.getRoot() || ({} as MosaicNode<T>);
 
@@ -164,6 +170,7 @@ export class MosaicWithoutDragDropContext<T extends MosaicKey = string> extends 
     expand: (path: MosaicPath, percentage: number = DEFAULT_EXPAND_PERCENTAGE) =>
       this.updateRoot([createExpandUpdate<T>(path, percentage)]),
     getRoot: () => this.getRoot()!,
+    getSingle: () => this.getSingle()!,
     hide: (path: MosaicPath) => this.updateRoot([createHideUpdate<T>(path)]),
     replaceWith: (path: MosaicPath, newNode: MosaicNode<T>) =>
       this.updateRoot([
@@ -183,12 +190,13 @@ export class MosaicWithoutDragDropContext<T extends MosaicKey = string> extends 
 
   private renderTree() {
     const root = this.getRoot();
+    const single = this.getSingle();
     this.validateTree(root);
     if (root === null || root === undefined) {
       return this.props.zeroStateView!;
     } else {
       const { renderTile, resize } = this.props;
-      return <MosaicRoot root={root} renderTile={renderTile} resize={resize} />;
+      return <MosaicRoot root={root} single={single} renderTile={renderTile} resize={resize} />;
     }
   }
 

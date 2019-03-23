@@ -32,6 +32,7 @@ export namespace BoundingBox {
   }
 
   export function split(boundingBox: BoundingBox, relativeSplitPercentage: number, direction: MosaicDirection): Split {
+    // console.log('function split', { boundingBox, relativeSplitPercentage, direction });
     const absolutePercentage = getAbsoluteSplitPercentage(boundingBox, relativeSplitPercentage, direction);
     if (direction === 'column') {
       return {

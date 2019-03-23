@@ -58,6 +58,10 @@ export interface MosaicRootActions<T extends MosaicKey> {
    * Returns the root of this Mosaic instance
    */
   getRoot: () => MosaicNode<T> | null;
+  /**
+   * Returns the path to single window if one of them is expanded else null
+   */
+  getSingle: () => MosaicPath | null;
 }
 
 export interface MosaicWindowActions {
@@ -110,6 +114,7 @@ export const MosaicActionsPropType = PropTypes.shape({
   replaceWith: PropTypes.func.isRequired,
   updateTree: PropTypes.func.isRequired,
   getRoot: PropTypes.func.isRequired,
+  getSingle: PropTypes.func.isRequired,
 }).isRequired;
 
 export const MosaicWindowActionsPropType = PropTypes.shape({
