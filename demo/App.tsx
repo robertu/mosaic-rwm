@@ -20,6 +20,8 @@ import {
   updateTree,
 } from '../src';
 
+import { CreateNode } from '../src/types';
+
 import { AppHeader } from './AppHeader';
 
 import '@blueprintjs/core/lib/css/blueprint.css';
@@ -83,6 +85,7 @@ export class App extends React.PureComponent<{}, AppState> {
 
     return (
       <div className="react-mosaic-app">
+        {/* <AppHeader lightTheme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} /> */}
         <AppHeader lightTheme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} addToTopRight={this.addToTopRight} />
         <Mosaic<string>
           renderTile={(name, path) => (
@@ -101,7 +104,6 @@ export class App extends React.PureComponent<{}, AppState> {
                 </ControlGroup>
               }
               title={`Window ${name}`}
-              createNode={this.createNode('FROM-WINDOW')}
               path={path}
               // tslint:disable-next-line:no-console
               onDragStart={() => console.log('MosaicWindow.onDragStart')}
@@ -113,10 +115,11 @@ export class App extends React.PureComponent<{}, AppState> {
               </div>
             </MosaicWindow>
           )}
-          zeroStateView={<MosaicZeroState createNode={this.createNode('dummy')} />}
-          value={this.state.currentNode}
-          onChange={this.onChange}
-          onRelease={this.onRelease}
+          zeroStateView={<MosaicZeroState createNode={this.createNode} />}
+          // value={this.state.currentNode}
+          // onChange={this.changeCurrentNode}
+          initialValue={'initalne'}
+          // onRelease={this.onRelease}
           className={classNames('mosaic-blueprint-theme', this.state.lightTheme ? null : Classes.DARK)}
         />
       </div>
@@ -128,22 +131,23 @@ export class App extends React.PureComponent<{}, AppState> {
     });
   };
 
-  private onChange = (currentNode: MosaicNode<string> | null) => {
-    this.setState({ currentNode });
-  };
+  // private changeCurrentNode = (currentNode: MosaicNode<string> | null) => {
+  //   this.setState({ currentNode });
+  // };
 
-  private onRelease = (currentNode: MosaicNode<string> | null) => {
-    // tslint:disable-next-line:no-console
-    console.log('Mosaic.onRelease():', currentNode);
-  };
+  // private onRelease = (currentNode: MosaicNode<string> | null) => {
+  //   // tslint:disable-next-line:no-console
+  //   console.log('Mosaic.onRelease():', currentNode);
+  // };
 
-  createNodeContent = (name: string) => {
-    const created = `${name}${++windowCount}`;
-    return created;
-  };
+  // createNodeContent: CreateNode<string> = (name: string): MosaicNode<string> => {
+  //   const created = `${name}${++windowCount}`;
+  //   return { direction: 'row', first: created, second: { direction: 'column', first: 'B', second: 'C' } };
+  //   // return created;
+  // };
 
-  createNode = (name: string) => () => {
-    return this.createNodeContent(name);
+  createNode: CreateNode<string> = (): MosaicNode<string> => {
+    return { direction: 'row', first: `A ${++windowCount}`, second: { direction: 'column', first: `B ${++windowCount}`, second: `C ${++windowCount}` } };
   };
 
   private autoArrange = () => {
@@ -155,7 +159,8 @@ export class App extends React.PureComponent<{}, AppState> {
   };
 
   addToTopRight = (name: string) => () => {
-    const created = this.createNodeContent(name);
+    const created = name;
+    // const created = this.createNodeContent(name);
     let { currentNode } = this.state;
     if (currentNode) {
       const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);

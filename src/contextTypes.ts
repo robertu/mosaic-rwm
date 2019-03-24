@@ -61,30 +61,15 @@ export interface MosaicRootActions<T extends MosaicKey> {
   /**
    * Returns the path to single window if one of them is expanded else null
    */
-  getSingle: () => MosaicPath | null;
+  setAll: () => void;
+  setSingle: (node: MosaicNode<T> | null) => void;
 }
 
 export interface MosaicWindowActions {
   /**
-   * Fails if no `createNode()` is defined
-   * Creates a new node and splits the current node.
-   * The current node becomes the `first` and the new node the `second` of the result.
-   * `direction` is chosen by querying the DOM and splitting along the longer axis
-   */
-  split: (...args: any[]) => Promise<void>;
-  /**
-   * Fails if no `createNode()` is defined
-   * Convenience function to call `createNode()` and replace the current node with it.
-   */
-  replaceWithNew: (...args: any[]) => Promise<void>;
-  /**
    * Sets the expanded state for the window
    */
   setExpanded: (expanded: boolean) => void;
-  /**
-   * Sets the open state for the tray that holds additional controls
-   */
-  setAdditionalControlsOpen: (open: boolean) => void;
   /**
    * Returns the info to this window
    */
@@ -114,13 +99,11 @@ export const MosaicActionsPropType = PropTypes.shape({
   replaceWith: PropTypes.func.isRequired,
   updateTree: PropTypes.func.isRequired,
   getRoot: PropTypes.func.isRequired,
-  getSingle: PropTypes.func.isRequired,
+  setSingle: PropTypes.func.isRequired,
+  setAll: PropTypes.func.isRequired,
 }).isRequired;
 
 export const MosaicWindowActionsPropType = PropTypes.shape({
-  split: PropTypes.func.isRequired,
-  replaceWithNew: PropTypes.func.isRequired,
-  setAdditionalControlsOpen: PropTypes.func.isRequired,
   getPath: PropTypes.func.isRequired,
   getInfo: PropTypes.func.isRequired,
   connectDragSource: PropTypes.func.isRequired,

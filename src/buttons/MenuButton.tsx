@@ -26,7 +26,7 @@ export class MenuButton<T extends MosaicKey> extends React.PureComponent<MosaicM
     const path = this.context.mosaicWindowActions.getPath();
 
     this.context.mosaicActions.expand(path, 100);
-    this.context.mosaicWindowActions.setExpanded(true);
+    // this.context.mosaicActions.setSingle("KOKO");
 
     if (this.props.onClickExpand) {
       this.props.onClickExpand();

@@ -2,13 +2,12 @@ import flatten from 'lodash/flatten';
 import React from 'react';
 import { MosaicContext } from './contextTypes';
 import { Split } from './Split';
-import { MosaicBranch, MosaicDirection, MosaicKey, MosaicNode, MosaicPath, ResizeOptions, TileRenderer } from './types';
+import { MosaicBranch, MosaicDirection, MosaicKey, MosaicNode, ResizeOptions, TileRenderer } from './types';
 import { BoundingBox } from './util/BoundingBox';
 import { isParent } from './util/mosaicUtilities';
 
 export interface MosaicRootProps<T extends MosaicKey> {
   root: MosaicNode<T>;
-  single: MosaicPath | null;
   renderTile: TileRenderer<T>;
   resize?: ResizeOptions;
 }
@@ -24,7 +23,6 @@ export class MosaicRoot<T extends MosaicKey> extends React.PureComponent<MosaicR
   }
 
   private renderRecursively(node: MosaicNode<T>, boundingBox: BoundingBox, path: MosaicBranch[]): JSX.Element | JSX.Element[] {
-    // const single = this.context.mosaicActions.getSingle(); // TODO: single
     if (isParent(node)) {
       const splitPercentage = node.splitPercentage === undefined ? 50 : node.splitPercentage;
       const { first, second } = BoundingBox.split(boundingBox, splitPercentage, node.direction);

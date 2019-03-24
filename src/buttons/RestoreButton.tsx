@@ -15,9 +15,7 @@ export class RestoreButton<T extends MosaicKey> extends React.PureComponent<Mosa
   }
 
   private restore = () => {
-    const path = this.context.mosaicWindowActions.getPath();
-
-    this.context.mosaicActions.expand(path, 50);
+    this.context.mosaicActions.setAll();
     this.context.mosaicWindowActions.setExpanded(false);
 
     if (this.props.onClick) {
