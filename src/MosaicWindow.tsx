@@ -201,7 +201,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
   private isExpanded = () => {
     const root = this.context.mosaicActions.getRoot();
     return root === this.props.name;
-  }
+  };
   private setExpanded = (expanded: boolean) => this.setState({ expanded });
 
   private connectDragSource = (connectedElements: React.ReactElement<any>) => {

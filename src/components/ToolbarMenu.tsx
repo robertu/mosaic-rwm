@@ -25,11 +25,7 @@ export class ToolbarMenu<T extends MosaicKey> extends React.PureComponent<Mosaic
       <Popover
         content={
           <Menu>
-            {expanded ? (
-              <MenuItem icon="minimize" text="Restore window" onClick={this.restore} />
-            ) : (
-                <MenuItem icon="maximize" text="Maximize window" onClick={this.expand} />
-              )}
+            {expanded ? <MenuItem icon="minimize" text="Restore window" onClick={this.restore} /> : <MenuItem icon="maximize" text="Maximize window" onClick={this.expand} />}
             {!expanded && <MenuDivider />}
             {!expanded && <MenuItem icon="cross" text="Close window" onClick={this.remove} />}
           </Menu>
