@@ -1,26 +1,11 @@
-import { Button, Classes, ControlGroup, FocusStyleManager, HTMLSelect, InputGroup, Menu, MenuItem, Popover, Position, Tag } from '@blueprintjs/core';
-// import { IconNames } from '@blueprintjs/icons';
+import { Button, Classes, ControlGroup, FocusStyleManager, InputGroup } from '@blueprintjs/core';
 import classNames from 'classnames';
-import dropRight from 'lodash/dropRight';
+
 import React from 'react';
 
-import {
-  Corner,
-  createBalancedTreeFromLeaves,
-  getLeaves,
-  getNodeAtPath,
-  getOtherDirection,
-  getPathToCorner,
-  Mosaic,
-  MosaicDirection,
-  MosaicNode,
-  MosaicParent,
-  MosaicWindow,
-  MosaicZeroState,
-  updateTree,
-} from '../src';
+import { Mosaic, MosaicNode, MosaicWindow, MosaicZeroState } from '../src';
 
-import { CreateNode } from '../src/types';
+import { MosaicBranch } from '../src/types';
 
 import { AppHeader } from './AppHeader';
 
@@ -29,108 +14,88 @@ import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '../styles/index.less';
 import './App.less';
 
-let windowCount = 0;
 FocusStyleManager.onlyShowFocusOnTabs();
 
-const additionalToolbarButtons = React.Children.toArray([<Button minimal={true} icon="add-to-folder" />]);
-
 export interface AppState {
-  currentNode: MosaicNode<string> | null;
   lightTheme: boolean;
+  mosaic: null | any;
 }
 
-export class App extends React.PureComponent<{}, AppState> {
-  state: AppState = {
-    currentNode: {
-      direction: 'row',
-      first: 'A',
-      second: {
-        direction: 'column',
-        first: 'B',
-        second: 'C',
-      },
-      splitPercentage: 40,
-    },
-    lightTheme: true,
+export class App extends React.Component<{}, AppState> {
+  seqNumber: number = 0;
+
+  constructor(props: Readonly<{}>) {
+    super(props);
+    this.state = {
+      lightTheme: true,
+      mosaic: null,
+    };
+  }
+
+  private renderTile = (name: string, path: MosaicBranch[]): React.ReactElement => {
+    return (
+      <MosaicWindow<string>
+        toolbarControls={name === 'B' ? <Button minimal={true} icon="help" /> : true}
+        statusbar={name !== 'C'}
+        name={name}
+        statusbarControls={
+          <ControlGroup fill={true} vertical={false}>
+            <InputGroup disabled={true} placeholder="Find filters..." value={'Status Bar'} />
+          </ControlGroup>
+        }
+        title={`Window title of node ${name}`}
+        path={path}
+        // tslint:disable-next-line:no-console
+        onDragStart={() => console.log('MosaicWindow.onDragStart')}
+        // tslint:disable-next-line:no-console
+        onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
+      >
+        <div className="example-window">
+          <h1>{`Window content of node "${name}"`}</h1>
+        </div>
+      </MosaicWindow>
+    );
+  };
+
+  private setMosaicRef = (mosaic: any) => {
+    this.setState({ mosaic });
+  };
+
+  private nodeCreator = (nodeName: string): MosaicNode<string> => {
+    ++this.seqNumber;
+    const unique: string = `${nodeName}${this.seqNumber}`;
+    this.state.mosaic.addToTopRight(unique);
+    return unique;
+  };
+
+  private themeSwitch = () => {
+    this.setState({
+      lightTheme: !this.state.lightTheme,
+    });
   };
 
   render() {
-    const small = false;
-    const large = false;
-    const disabled = true;
-
-    // const filterValue = "asdfc";
-
-    const tagValue = '';
-
-    const permissionsMenu = (
-      <Popover
-        content={
-          <Menu>
-            <MenuItem text="can edit" />
-            <MenuItem text="can view" />
-          </Menu>
-        }
-        disabled={disabled}
-        position={Position.BOTTOM_RIGHT}
-      >
-        <Button disabled={disabled} minimal={true} fill={true} rightIcon="caret-down">
-          can edit
-        </Button>
-      </Popover>
-    );
-
-    const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
-    const FILTER_OPTIONS = ['Filter', 'Name - ascending', 'Name - descending', 'Price - ascending', 'Price - descending'];
-
     return (
       <div className="react-mosaic-app">
-        {/* <AppHeader lightTheme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} /> */}
-        <AppHeader lightTheme={this.state.lightTheme} autoArrange={this.autoArrange} themeSwitch={this.themeSwitch} addToTopRight={this.addToTopRight} />
+        <AppHeader
+          lightTheme={this.state.lightTheme}
+          mosaic={this.state.mosaic}
+          nodeCreator={this.nodeCreator}
+          themeSwitch={this.themeSwitch}
+        />
         <Mosaic<string>
-          renderTile={(name, path) => (
-            <MosaicWindow<string>
-              additionalControls={name === 'A' ? additionalToolbarButtons : null}
-              toolbarControls={name === 'B' ? <Button minimal={true} icon="help" /> : true}
-              statusbar={name !== 'C'}
-              name={name}
-              statusbarControls={
-                <ControlGroup fill={true} vertical={false}>
-                  <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{ cursor: 'pointer' }} />
-                  <InputGroup placeholder="Find filters..." disabled={disabled} />
-                  <Button icon="arrow-right" disabled={disabled} />
-
-                  <InputGroup disabled={disabled} large={large} leftIcon="tag" placeholder="Find tags" rightElement={resultsTag} small={small} value={tagValue} />
-                  <InputGroup disabled={disabled} large={large} placeholder="Add people or groups..." rightElement={permissionsMenu} small={small} />
-                </ControlGroup>
-              }
-              title={`Window ${name}`}
-              path={path}
-              // tslint:disable-next-line:no-console
-              onDragStart={() => console.log('MosaicWindow.onDragStart')}
-              // tslint:disable-next-line:no-console
-              onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
-            >
-              <div className="example-window">
-                <h1>{`Window ${name}`}</h1>
-              </div>
-            </MosaicWindow>
-          )}
-          zeroStateView={<MosaicZeroState createNode={this.createNode} />}
+          setRef={this.setMosaicRef}
+          renderTile={this.renderTile}
+          zeroStateView={<MosaicZeroState createNode={() => this.nodeCreator('dummy')} />}
           // value={this.state.currentNode}
           // onChange={this.changeCurrentNode}
-          initialValue={'initalne'}
+          initialValue={'joł'}
           // onRelease={this.onRelease}
           className={classNames('mosaic-blueprint-theme', this.state.lightTheme ? null : Classes.DARK)}
         />
       </div>
     );
   }
-  private themeSwitch = () => {
-    this.setState({
-      lightTheme: !this.state.lightTheme,
-    });
-  };
 
   // private changeCurrentNode = (currentNode: MosaicNode<string> | null) => {
   //   this.setState({ currentNode });
@@ -140,61 +105,4 @@ export class App extends React.PureComponent<{}, AppState> {
   //   // tslint:disable-next-line:no-console
   //   console.log('Mosaic.onRelease():', currentNode);
   // };
-
-  // createNodeContent: CreateNode<string> = (name: string): MosaicNode<string> => {
-  //   const created = `${name}${++windowCount}`;
-  //   return { direction: 'row', first: created, second: { direction: 'column', first: 'B', second: 'C' } };
-  //   // return created;
-  // };
-
-  createNode: CreateNode<string> = (): MosaicNode<string> => {
-    return { direction: 'row', first: `A ${++windowCount}`, second: { direction: 'column', first: `B ${++windowCount}`, second: `C ${++windowCount}` } };
-  };
-
-  private autoArrange = () => {
-    const leaves = getLeaves(this.state.currentNode);
-
-    this.setState({
-      currentNode: createBalancedTreeFromLeaves(leaves),
-    });
-  };
-
-  addToTopRight = (name: string) => () => {
-    const created = name;
-    // const created = this.createNodeContent(name);
-    let { currentNode } = this.state;
-    if (currentNode) {
-      const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
-      const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<string>;
-      const destination = getNodeAtPath(currentNode, path) as MosaicNode<string>;
-      const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : 'row';
-
-      let first: MosaicNode<string>;
-      let second: MosaicNode<string>;
-      if (direction === 'row') {
-        first = destination;
-        second = created;
-      } else {
-        first = created;
-        second = destination;
-      }
-
-      currentNode = updateTree(currentNode, [
-        {
-          path,
-          spec: {
-            $set: {
-              direction,
-              first,
-              second,
-            },
-          },
-        },
-      ]);
-    } else {
-      currentNode = created;
-    }
-
-    this.setState({ currentNode });
-  };
 }

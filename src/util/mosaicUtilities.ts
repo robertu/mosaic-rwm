@@ -37,7 +37,10 @@ export function isParent<T extends MosaicKey>(node: MosaicNode<T>): node is Mosa
  * @param startDirection
  * @returns {MosaicNode<T>}
  */
-export function createBalancedTreeFromLeaves<T extends MosaicKey>(leaves: MosaicNode<T>[], startDirection: MosaicDirection = 'row'): MosaicNode<T> | null {
+export function createBalancedTreeFromLeaves<T extends MosaicKey>(
+  leaves: MosaicNode<T>[],
+  startDirection: MosaicDirection = 'row',
+): MosaicNode<T> | null {
   if (leaves.length === 0) {
     return null;
   }

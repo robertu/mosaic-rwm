@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import countBy from 'lodash/countBy';
 import keys from 'lodash/keys';
+import dropRight from 'lodash/dropRight';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 import { DragDropContext } from 'react-dnd';
@@ -10,13 +11,17 @@ import { ModernMosaicContext, MosaicContext, MosaicRootActions } from './context
 import { MosaicRoot } from './MosaicRoot';
 import { MosaicZeroState } from './MosaicZeroState';
 import { RootDropTargets } from './RootDropTargets';
-import { MosaicKey, MosaicNode, MosaicPath, MosaicUpdate, ResizeOptions, TileRenderer } from './types';
+import { MosaicKey, MosaicNode, MosaicPath, MosaicUpdate, ResizeOptions, TileRenderer, MosaicDirection, MosaicParent } from './types';
 import { createExpandUpdate, createHideUpdate, createRemoveUpdate, updateTree } from './util/mosaicUpdates';
-import { getLeaves } from './util/mosaicUtilities';
+import { getLeaves, createBalancedTreeFromLeaves, Corner, getNodeAtPath, getOtherDirection, getPathToCorner } from './util/mosaicUtilities';
 
 const DEFAULT_EXPAND_PERCENTAGE = 80;
 
 export interface MosaicBaseProps<T extends MosaicKey> {
+  /**
+   * Set Mosaic reference to itself in didMount`
+   */
+  setRef: (ref: any) => void;
   /**
    * Lookup function to convert `T` to a displayable `JSX.Element`
    */
@@ -122,6 +127,61 @@ export class MosaicWithoutDragDropContext<T extends MosaicKey = string> extends 
       this.setState({ currentNode: this.props.initialValue });
     }
   }
+
+  componentDidMount() {
+    if (this.props.setRef) {
+      this.props.setRef(this);
+    }
+  }
+
+  public autoArrange = () => {
+    if (!isUncontrolled(this.props)) {
+      return;
+    }
+    const leaves = getLeaves(this.state.currentNode);
+    this.setState({
+      currentNode: createBalancedTreeFromLeaves(leaves),
+    });
+  };
+
+  public addToTopRight = (node: MosaicNode<T>) => {
+    const created: MosaicNode<T> = node as MosaicNode<T>;
+    // const created = this.createNodeContent(name);
+    let { currentNode } = this.state;
+    if (currentNode) {
+      const path = getPathToCorner(currentNode, Corner.TOP_RIGHT);
+      const parent = getNodeAtPath(currentNode, dropRight(path)) as MosaicParent<T>;
+      const destination = getNodeAtPath(currentNode, path) as MosaicNode<T>;
+      const direction: MosaicDirection = parent ? getOtherDirection(parent.direction) : 'row';
+
+      let first: MosaicNode<T>;
+      let second: MosaicNode<T>;
+      if (direction === 'row') {
+        first = destination;
+        second = created;
+      } else {
+        first = created;
+        second = destination;
+      }
+
+      currentNode = updateTree(currentNode, [
+        {
+          path,
+          spec: {
+            $set: {
+              direction,
+              first,
+              second,
+            },
+          },
+        },
+      ]);
+    } else {
+      currentNode = created;
+    }
+
+    this.setState({ currentNode });
+  };
 
   private getRoot(): MosaicNode<T> | null {
     if (isUncontrolled(this.props)) {

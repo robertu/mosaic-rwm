@@ -299,7 +299,14 @@ export class MosaicWindow<T extends MosaicKey = string> extends React.PureCompon
 }
 
 // Factory that works with generics
-export function MosaicWindowFactory<T extends MosaicKey = string>(props: MosaicWindowProps<T> & React.Attributes, ...children: React.ReactNode[]) {
-  const element: React.ReactElement<MosaicWindowProps<T>> = React.createElement((InternalMosaicWindow as any) as React.ComponentClass<MosaicWindowProps<T>>, props, ...children);
+export function MosaicWindowFactory<T extends MosaicKey = string>(
+  props: MosaicWindowProps<T> & React.Attributes,
+  ...children: React.ReactNode[]
+) {
+  const element: React.ReactElement<MosaicWindowProps<T>> = React.createElement(
+    (InternalMosaicWindow as any) as React.ComponentClass<MosaicWindowProps<T>>,
+    props,
+    ...children,
+  );
   return element;
 }
