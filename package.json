@@ -1,6 +1,6 @@
 {
   "name": "mosaicrwm",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A React Tiling Window Manager",
   "license": "Apache-2.0",
   "main": "lib/index.js",
