@@ -39,9 +39,9 @@ export {
   isParent,
 } from './util/mosaicUtilities';
 export { MosaicWindow, MosaicWindowFactory, MosaicWindowProps } from './MosaicWindow';
-export { createDefaultToolbarButton, MosaicButtonProps } from './buttons/MosaicButton';
+export { createDefaultToolbarButton, MosaicButtonProps } from './components/MosaicButton';
 export { MosaicZeroState, MosaicZeroStateFactory, MosaicZeroStateProps } from './MosaicZeroState';
-export { Separator, SeparatorFactory } from './buttons/Separator';
-export { ExpandButton, ExpandButtonFactory } from './buttons/ExpandButton';
-export { RemoveButton, RemoveButtonFactory } from './buttons/RemoveButton';
-export { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION } from './buttons/defaultToolbarControls';
+export { Separator, SeparatorFactory } from './components/Separator';
+export { ExpandButton, ExpandButtonFactory } from './components/ExpandButton';
+export { RemoveButton, RemoveButtonFactory } from './components/RemoveButton';
+export { DEFAULT_CONTROLS_ALL_VISIBLE, DEFAULT_CONTROLS_EXPANDED } from './components/defaultToolbarControls';

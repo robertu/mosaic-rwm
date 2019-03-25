@@ -7,24 +7,27 @@ import values from 'lodash/values';
 import React from 'react';
 import { ConnectDragPreview, ConnectDragSource, ConnectDropTarget, DragSource, DragSourceMonitor, DropTarget } from 'react-dnd';
 
-import { DEFAULT_CONTROLS_WITHOUT_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED } from './buttons/defaultToolbarControls';
+import { DEFAULT_CONTROLS_EXPANDED, DEFAULT_CONTROLS_ALL_VISIBLE } from './components/defaultToolbarControls';
 import { ModernMosaicWindowContext, MosaicContext, MosaicWindowActionsPropType, MosaicWindowContext } from './contextTypes';
 
 import { MosaicBranch, MosaicDragType, MosaicKey } from './types';
 import { createDragToUpdates } from './util/mosaicUpdates';
 
-import { MenuButton } from './buttons/MenuButton';
+import { ToolbarMenu } from './components/ToolbarMenu';
 import { MosaicDragItem, MosaicDropData, MosaicDropTargetPosition } from './internalTypes';
 import { MosaicDropTarget } from './MosaicDropTarget';
 import { OptionalBlueprint } from './util/OptionalBlueprint';
+import { IconName } from '@blueprintjs/core';
 
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
   path: MosaicBranch[];
   className?: string;
+  name: T;
+  icon?: IconName;
   toolbarControls?: React.ReactNode;
   statusbarControls?: React.ReactNode;
-  toolbarWindowIcon?: React.ReactNode;
+  toolbarMenu?: React.ReactNode;
   additionalControls?: React.ReactNode;
   draggable?: boolean;
   statusbar?: boolean;
@@ -49,7 +52,6 @@ export interface InternalDropTargetProps {
 export type InternalMosaicWindowProps<T extends MosaicKey> = MosaicWindowProps<T> & InternalDropTargetProps & InternalDragSourceProps;
 
 export interface InternalMosaicWindowState {
-  additionalControlsOpen: boolean;
   expanded: boolean;
 }
 
@@ -77,7 +79,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
   };
 
   state: InternalMosaicWindowState = {
-    additionalControlsOpen: false,
     expanded: false,
   };
   context!: MosaicContext<T>;
@@ -97,7 +98,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
           <div
             className={classNames('mosaic-window mosaic-drop-target', className, {
               'drop-target-hover': isOver && draggedMosaicId === this.context.mosaicId,
-              'additional-controls-open': this.state.additionalControlsOpen,
             })}
             // ref={(element) => (this.rootElement = element)}
           >
@@ -118,28 +118,26 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
     if (toolbarControls !== undefined && toolbarControls !== true) {
       return toolbarControls;
     } else {
-      return expanded ? DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED : DEFAULT_CONTROLS_WITHOUT_CREATION;
+      return expanded ? DEFAULT_CONTROLS_EXPANDED : DEFAULT_CONTROLS_ALL_VISIBLE;
     }
   }
 
   private getStatusbarControls() {
     const { statusbarControls } = this.props;
-    const { expanded } = this.state;
     if (statusbarControls) {
       return statusbarControls;
-    } else {
-      return expanded ? DEFAULT_CONTROLS_WITHOUT_CREATION_EXPANDED : DEFAULT_CONTROLS_WITHOUT_CREATION;
     }
+    return null;
   }
 
-  private getToolbarWindowIcon() {
-    const { toolbarWindowIcon } = this.props;
+  private getToolbarMenu() {
+    const { toolbarMenu, icon } = this.props;
     const { expanded } = this.state;
 
-    if (toolbarWindowIcon) {
-      return toolbarWindowIcon;
+    if (toolbarMenu) {
+      return toolbarMenu;
     } else {
-      return <MenuButton expanded={expanded} />;
+      return <ToolbarMenu icon={icon || 'application'} expanded={expanded} />;
     }
   }
 
@@ -147,7 +145,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
     const { title, draggable, additionalControls, connectDragSource, path, renderToolbar } = this.props;
     const { expanded } = this.state;
     const toolbarControls = this.getToolbarControls();
-    const toolbarWindowIcon = this.getToolbarWindowIcon();
+    const toolbarMenu = this.getToolbarMenu();
     const draggableAndNotRoot = draggable && path.length > 0 && !expanded;
 
     if (renderToolbar) {
@@ -169,7 +167,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
 
     return (
       <div className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
-        {toolbarWindowIcon}
+        {toolbarMenu}
         {titleDiv}
         <div className={classNames('mosaic-window-controls', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
           {hasAdditionalControls && additionalControls}
@@ -198,7 +196,12 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<I
 
   private getPath = () => this.props.path;
   private getInfo = () => ({ window: this });
-  private isExpanded = () => this.state.expanded;
+  // private isExpanded = () => this.state.expanded;
+
+  private isExpanded = () => {
+    const root = this.context.mosaicActions.getRoot();
+    return root === this.props.name;
+  }
   private setExpanded = (expanded: boolean) => this.setState({ expanded });
 
   private connectDragSource = (connectedElements: React.ReactElement<any>) => {

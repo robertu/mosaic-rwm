@@ -93,6 +93,7 @@ export class App extends React.PureComponent<{}, AppState> {
               additionalControls={name === 'A' ? additionalToolbarButtons : null}
               toolbarControls={name === 'B' ? <Button minimal={true} icon="help" /> : true}
               statusbar={name !== 'C'}
+              name={name}
               statusbarControls={
                 <ControlGroup fill={true} vertical={false}>
                   <HTMLSelect options={FILTER_OPTIONS} disabled={disabled} style={{ cursor: 'pointer' }} />

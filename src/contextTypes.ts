@@ -59,9 +59,10 @@ export interface MosaicRootActions<T extends MosaicKey> {
    */
   getRoot: () => MosaicNode<T> | null;
   /**
-   * Returns the path to single window if one of them is expanded else null
+   * Restores all windows back to currentNode
    */
   setAll: () => void;
+
   setSingle: (node: MosaicNode<T> | null) => void;
 }
 
