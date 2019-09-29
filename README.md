@@ -8,7 +8,7 @@ mosaicrwm is a full-featured React Tiling Window Manager meant to give a user co
 It provides a simple and flexible API to tile arbitrarily complex react components across a user's view.
 react-mosaic is written in TypeScript and provides typings but can be used in JavaScript as well.
 
-The best way to see it is a simple [**Demo**](https://robertu.github.io/mosaicrwm/).
+The best way to see it is clickin on demo link here: [**Demo**](https://robertu.github.io/mosaicrwm/).
 
 #### Screencast
 
